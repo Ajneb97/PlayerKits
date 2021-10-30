@@ -38,7 +38,7 @@ local.properties
 .recommenders
 dependency-reduced-pom.xml
 
-src/players/
-src/kits/
+src/players.yml
+src/kits.yml
 holograms.yml
 arenas.yml
