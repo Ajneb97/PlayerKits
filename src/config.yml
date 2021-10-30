@@ -1,0 +1,77 @@
+Messages:
+    prefix: "&8[&4PlayerKits&8] "
+    noPermissions: "&cYou don't have permissions for that."
+    commandCreateError: "&cYou need to use: &7/kit create <name>"
+    commandDeleteError: "&cYou need to use: &7/kit delete <name>"
+    commandClaimError: "&cYou need to use: &7/kit claim <kit>"
+    commandGiveError: "&cYou need to use: &7/kit give <kit> <player>"
+    commandEditError: "&cYou need to use: &7/kit edit <kit>"
+    commandPreviewError: "&cYou need to use: &7/kit preview <kit>"
+    commandOpenError: "&cYou need to use: &7/kit open <player> <page>"
+    kitAlreadyExists: "&cThe kit &7%name% &calready exists on the config."
+    kitDoesNotExists: "&cThe kit &7%name% &cdoesn't exists."
+    inventoryEmpty: "&cYou need at least 1 item on your inventory to create a kit."
+    kitCreated: "&aKit &7%name% &acreated correctly."
+    kitRemoved: "&aKit &7%name% &aremoved correctly."
+    inventoryName: "&9Kits"
+    kitReceived: "&aKit &7%name% &areceived."
+    configReload: "&aConfig Reloaded."
+    seconds: 's'
+    minutes: 'm'
+    hours: 'h'
+    days: 'd'
+    cooldownPlaceholderReady: "&a&lReady!"
+    cooldownError: "&cYou need to wait &7%time% &cto claim this kit again."
+    kitNoPermissions: "&cYou don't have permissions to claim this kit."
+    kitInCooldownLore:
+    - "&cYou need to wait &7%time%"
+    - "&cto claim this kit again."
+    commandList: "&6&lKit List"
+    commandListKit: "&6%number% &8» &a%kit%"
+    commandListKitNoPermissions: "&6%number% &8» &c%kit% &7(No Permissions)"
+    commandListKitInCooldown: "&6%number% &8» &c%kit% &7(Cooldown: &8%time%&7)"
+    commandListKitOneTime: "&6%number% &8» &c%kit% &7(Already claimed&7)"
+    noSpaceError: "&cYou don't have enough space in your inventory."
+    materialNameError: "&cThere is an error on your config. Material: &7&l%material% &cis not valid for your Minecraft version."
+    oneTimeError: "&cYou can't claim this kit again."
+    kitOneTimeLore:
+    - "&cYou can't claim this kit again."
+    previewInventoryName: "&9Kit Preview"
+    backItemName: "&7Back" 
+    playerNotOnline: "&cPlayer &7%player% &cis not online."
+    kitGive: "&aKit &7%kit% &agiven to &e%player%&a!"
+    noMoneyError: "&cYou don't have enough money to claim this kit. &8(&a$&c%current_money%&7/&a$&c%required_money%&8)"
+    moneyInventoryName: "&9Buy Kit Confirmation"
+    moneyInventoryYes: "&a&lYES"
+    moneyInventoryNo: "&c&lNO"
+    moneyInventoryConfirmationName: "&6Are you sure?"
+    moneyInventoryConfirmationLore:
+    - "&7This will cost you: &a$%price%"
+    kitInventoryOpen: "&aOpening Kits inventory for &e%player%&a."
+    errorPage: "&cWrite a valid page."
+    commandResetError: "&cYou need to use: &7/kit reset <kit> <player>"
+    kitResetCorrect: "&aKit &7%kit% &areset for &7%player%&a!"
+    kitResetFail: "&cNot possible to reset kit &7%kit% &cfor &7%player%&c!"
+    noPreviewError: "&cThere is nothing to preview for this kit."
+Config:
+    inventorySize: 45
+    previewInventorySize: 54
+    preview_inventory_back_item_slot: 45
+    kit_preview: true
+    kit_preview_back_item: true
+    hide_kits_with_permissions: false
+    close_inventory_on_claim: false
+    drop_items_if_full_inventory: false
+    commands_before_items: false
+    kit_error_sound: BLOCK_NOTE_BLOCK_PLING;10;0.1
+    kit_claim_sound: ENTITY_PLAYER_LEVELUP;10;1.5
+    kit_page_sound: BLOCK_LAVA_POP;10;1
+    update_notify: true
+    player_data_save_time: 300
+    mysql_database:
+      enabled: false
+      host: localhost
+      port: 3306
+      username: root
+      password: root
+      database: database

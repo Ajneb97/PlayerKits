@@ -1,0 +1,11 @@
+main: pk.ajneb97.PlayerKits
+version: 2.19.1
+name: PlayerKits
+api-version: 1.13
+softdepend: [Vault,PlaceholderAPI]
+author: Ajneb97
+
+commands:
+  kit:
+    description: Main command of PlayerKits
+    aliases: kits
