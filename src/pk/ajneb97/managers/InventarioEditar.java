@@ -93,14 +93,14 @@ public class InventarioEditar implements Listener{
 		}
 		if(firstJoin.equals("true")) {
 			if(Bukkit.getVersion().contains("1.13") || Bukkit.getVersion().contains("1.14") || Bukkit.getVersion().contains("1.15")
-					|| Bukkit.getVersion().contains("1.16")  || Bukkit.getVersion().contains("1.17")) {
+					|| Bukkit.getVersion().contains("1.16")  || Bukkit.getVersion().contains("1.17")|| Bukkit.getVersion().contains("1.18")) {
 				item = new ItemStack(Material.LIME_DYE);
 			}else {
 				item = new ItemStack(Material.valueOf("INK_SACK"),1,(short) 10);
 			}
 		}else {
 			if(Bukkit.getVersion().contains("1.13") || Bukkit.getVersion().contains("1.14") || Bukkit.getVersion().contains("1.15")
-					|| Bukkit.getVersion().contains("1.16")  || Bukkit.getVersion().contains("1.17")) {
+					|| Bukkit.getVersion().contains("1.16")  || Bukkit.getVersion().contains("1.17")|| Bukkit.getVersion().contains("1.18")) {
 				item = new ItemStack(Material.GRAY_DYE);
 			}else {
 				item = new ItemStack(Material.valueOf("INK_SACK"),1,(short) 8);
@@ -125,14 +125,14 @@ public class InventarioEditar implements Listener{
 		}
 		if(oneTime.equals("true")) {
 			if(Bukkit.getVersion().contains("1.13") || Bukkit.getVersion().contains("1.14") || Bukkit.getVersion().contains("1.15")
-					|| Bukkit.getVersion().contains("1.16")  || Bukkit.getVersion().contains("1.17")) {
+					|| Bukkit.getVersion().contains("1.16")  || Bukkit.getVersion().contains("1.17")|| Bukkit.getVersion().contains("1.18")) {
 				item = new ItemStack(Material.LIME_DYE);
 			}else {
 				item = new ItemStack(Material.valueOf("INK_SACK"),1,(short) 10);
 			}
 		}else {
 			if(Bukkit.getVersion().contains("1.13") || Bukkit.getVersion().contains("1.14") || Bukkit.getVersion().contains("1.15")
-					|| Bukkit.getVersion().contains("1.16") || Bukkit.getVersion().contains("1.17")) {
+					|| Bukkit.getVersion().contains("1.16") || Bukkit.getVersion().contains("1.17")|| Bukkit.getVersion().contains("1.18")) {
 				item = new ItemStack(Material.GRAY_DYE);
 			}else {
 				item = new ItemStack(Material.valueOf("INK_SACK"),1,(short) 8);
@@ -155,14 +155,14 @@ public class InventarioEditar implements Listener{
 		}
 		if(autoArmor.equals("true")) {
 			if(Bukkit.getVersion().contains("1.13") || Bukkit.getVersion().contains("1.14") || Bukkit.getVersion().contains("1.15")
-					|| Bukkit.getVersion().contains("1.16") || Bukkit.getVersion().contains("1.17")) {
+					|| Bukkit.getVersion().contains("1.16") || Bukkit.getVersion().contains("1.17")|| Bukkit.getVersion().contains("1.18")) {
 				item = new ItemStack(Material.LIME_DYE);
 			}else {
 				item = new ItemStack(Material.valueOf("INK_SACK"),1,(short) 10);
 			}
 		}else {
 			if(Bukkit.getVersion().contains("1.13") || Bukkit.getVersion().contains("1.14") || Bukkit.getVersion().contains("1.15")
-					|| Bukkit.getVersion().contains("1.16") || Bukkit.getVersion().contains("1.17")) {
+					|| Bukkit.getVersion().contains("1.16") || Bukkit.getVersion().contains("1.17")|| Bukkit.getVersion().contains("1.18")) {
 				item = new ItemStack(Material.GRAY_DYE);
 			}else {
 				item = new ItemStack(Material.valueOf("INK_SACK"),1,(short) 8);
@@ -298,14 +298,14 @@ public class InventarioEditar implements Listener{
 		}
 		if(oneTimeBuy.equals("true")) {
 			if(Bukkit.getVersion().contains("1.13") || Bukkit.getVersion().contains("1.14") || Bukkit.getVersion().contains("1.15")
-					|| Bukkit.getVersion().contains("1.16") || Bukkit.getVersion().contains("1.17")) {
+					|| Bukkit.getVersion().contains("1.16") || Bukkit.getVersion().contains("1.17")|| Bukkit.getVersion().contains("1.18")) {
 				item = new ItemStack(Material.LIME_DYE);
 			}else {
 				item = new ItemStack(Material.valueOf("INK_SACK"),1,(short) 10);
 			}
 		}else {
 			if(Bukkit.getVersion().contains("1.13") || Bukkit.getVersion().contains("1.14") || Bukkit.getVersion().contains("1.15")
-					|| Bukkit.getVersion().contains("1.16") || Bukkit.getVersion().contains("1.17")) {
+					|| Bukkit.getVersion().contains("1.16") || Bukkit.getVersion().contains("1.17")|| Bukkit.getVersion().contains("1.18")) {
 				item = new ItemStack(Material.GRAY_DYE);
 			}else {
 				item = new ItemStack(Material.valueOf("INK_SACK"),1,(short) 8);
@@ -353,7 +353,7 @@ public class InventarioEditar implements Listener{
 		inv.setItem(53, item);
 		
 		if(Bukkit.getVersion().contains("1.13") || Bukkit.getVersion().contains("1.14") || Bukkit.getVersion().contains("1.15")
-				|| Bukkit.getVersion().contains("1.16") || Bukkit.getVersion().contains("1.17")) {
+				|| Bukkit.getVersion().contains("1.16") || Bukkit.getVersion().contains("1.17")|| Bukkit.getVersion().contains("1.18")) {
 			item = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
 		}else {
 			item = new ItemStack(Material.valueOf("STAINED_GLASS_PANE"),1,(short) 8);
@@ -512,7 +512,7 @@ public class InventarioEditar implements Listener{
 		inv.setItem(18, item);
 		
 		if(Bukkit.getVersion().contains("1.13") || Bukkit.getVersion().contains("1.14") || Bukkit.getVersion().contains("1.15")
-				|| Bukkit.getVersion().contains("1.16") || Bukkit.getVersion().contains("1.17")) {
+				|| Bukkit.getVersion().contains("1.16") || Bukkit.getVersion().contains("1.17")|| Bukkit.getVersion().contains("1.18")) {
 			item = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
 		}else {
 			item = new ItemStack(Material.valueOf("STAINED_GLASS_PANE"),1,(short) 8);
@@ -529,7 +529,7 @@ public class InventarioEditar implements Listener{
 		inv.setItem(9, item);inv.setItem(13, item);;inv.setItem(17, item);
 		
 		if(Bukkit.getVersion().contains("1.13") || Bukkit.getVersion().contains("1.14") || Bukkit.getVersion().contains("1.15")
-				|| Bukkit.getVersion().contains("1.16") || Bukkit.getVersion().contains("1.17")) {
+				|| Bukkit.getVersion().contains("1.16") || Bukkit.getVersion().contains("1.17")|| Bukkit.getVersion().contains("1.18")) {
 			item = new ItemStack(Material.PLAYER_HEAD);
 		}else {
 			item = new ItemStack(Material.valueOf("SKULL_ITEM"),1,(short) 3);
@@ -541,7 +541,7 @@ public class InventarioEditar implements Listener{
 		inv.setItem(10, item);
 		
 		if(Bukkit.getVersion().contains("1.13") || Bukkit.getVersion().contains("1.14") || Bukkit.getVersion().contains("1.15")
-				|| Bukkit.getVersion().contains("1.16") || Bukkit.getVersion().contains("1.17")) {
+				|| Bukkit.getVersion().contains("1.16") || Bukkit.getVersion().contains("1.17")|| Bukkit.getVersion().contains("1.18")) {
 			item = new ItemStack(Material.PLAYER_HEAD);
 		}else {
 			item = new ItemStack(Material.valueOf("SKULL_ITEM"),1,(short) 3);
@@ -621,14 +621,14 @@ public class InventarioEditar implements Listener{
 		}
 		if(glowing.equals("true")) {
 			if(Bukkit.getVersion().contains("1.13") || Bukkit.getVersion().contains("1.14") || Bukkit.getVersion().contains("1.15")
-					|| Bukkit.getVersion().contains("1.16") || Bukkit.getVersion().contains("1.17")) {
+					|| Bukkit.getVersion().contains("1.16") || Bukkit.getVersion().contains("1.17")|| Bukkit.getVersion().contains("1.18")) {
 				item = new ItemStack(Material.LIME_DYE);
 			}else {
 				item = new ItemStack(Material.valueOf("INK_SACK"),1,(short) 10);
 			}
 		}else {
 			if(Bukkit.getVersion().contains("1.13") || Bukkit.getVersion().contains("1.14") || Bukkit.getVersion().contains("1.15")
-					|| Bukkit.getVersion().contains("1.16") || Bukkit.getVersion().contains("1.17")) {
+					|| Bukkit.getVersion().contains("1.16") || Bukkit.getVersion().contains("1.17")|| Bukkit.getVersion().contains("1.18")) {
 				item = new ItemStack(Material.GRAY_DYE);
 			}else {
 				item = new ItemStack(Material.valueOf("INK_SACK"),1,(short) 8);
@@ -757,7 +757,7 @@ public class InventarioEditar implements Listener{
 			Material id = item.getType();
 			int datavalue = 0;
 			if(!Bukkit.getVersion().contains("1.13") && !Bukkit.getVersion().contains("1.14") && !Bukkit.getVersion().contains("1.15")
-					&& !Bukkit.getVersion().contains("1.16") || Bukkit.getVersion().contains("1.17")){
+					&& !Bukkit.getVersion().contains("1.16") || Bukkit.getVersion().contains("1.17")|| Bukkit.getVersion().contains("1.18")){
 				if(id == Material.POTION){
 					datavalue = item.getDurability();
 				}else{
@@ -779,7 +779,7 @@ public class InventarioEditar implements Listener{
 			}
 			
 			if(Bukkit.getVersion().contains("1.13") || Bukkit.getVersion().contains("1.14") || Bukkit.getVersion().contains("1.15")
-					|| Bukkit.getVersion().contains("1.16") || Bukkit.getVersion().contains("1.17")){
+					|| Bukkit.getVersion().contains("1.16") || Bukkit.getVersion().contains("1.17")|| Bukkit.getVersion().contains("1.18")){
 				if(id == Material.getMaterial("PLAYER_HEAD")){
 					Utilidades.guardarSkullDisplay(item,kits,path);				
 				}
@@ -812,7 +812,7 @@ public class InventarioEditar implements Listener{
 		inv.setItem(53, item);
 		
 		if(Bukkit.getVersion().contains("1.13") || Bukkit.getVersion().contains("1.14") || Bukkit.getVersion().contains("1.15")
-				|| Bukkit.getVersion().contains("1.16") || Bukkit.getVersion().contains("1.17")) {
+				|| Bukkit.getVersion().contains("1.16") || Bukkit.getVersion().contains("1.17")|| Bukkit.getVersion().contains("1.18")) {
 			item = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
 		}else {
 			item = new ItemStack(Material.valueOf("STAINED_GLASS_PANE"),1,(short) 8);
@@ -938,7 +938,7 @@ public class InventarioEditar implements Listener{
 		inv.setItem(53, item);
 		
 		if(Bukkit.getVersion().contains("1.13") || Bukkit.getVersion().contains("1.14") || Bukkit.getVersion().contains("1.15")
-				|| Bukkit.getVersion().contains("1.16") || Bukkit.getVersion().contains("1.17")) {
+				|| Bukkit.getVersion().contains("1.16") || Bukkit.getVersion().contains("1.17")|| Bukkit.getVersion().contains("1.18")) {
 			item = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
 		}else {
 			item = new ItemStack(Material.valueOf("STAINED_GLASS_PANE"),1,(short) 8);

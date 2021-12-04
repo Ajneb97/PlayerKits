@@ -3,7 +3,6 @@ package pk.ajneb97.managers;
 import java.util.List;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -15,8 +14,10 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
 
+import net.md_5.bungee.api.ChatColor;
 import pk.ajneb97.InventarioJugador;
 import pk.ajneb97.PlayerKits;
+import pk.ajneb97.otros.MensajesUtils;
 
 public class InventarioListener implements Listener{
 
@@ -106,6 +107,21 @@ public class InventarioListener implements Listener{
 										}
 										if(page == pagina) {
 											if(event.getClick().equals(ClickType.RIGHT) && config.getString("Config.kit_preview").equals("true")) {
+												//Comprobar si tiene permiso y si esta activada la opcion de requerir permiso
+												boolean hasPermission = true;
+												if(configKits.contains("Kits."+key+".permission")) {
+													String permission = configKits.getString("Kits."+key+".permission");
+													if(!jugador.isOp() && !jugador.hasPermission(permission)) {
+														hasPermission = false;
+													}
+												}
+												boolean permissionCheck = config.getBoolean("Config.preview_inventory_requires_permission");
+												if(permissionCheck && !hasPermission) {
+													String prefix = config.getString("Messages.prefix");
+													jugador.sendMessage(MensajesUtils.getMensajeColor(prefix+config.getString("Messages.cantPreviewError")));
+													return;
+												}
+												
 												InventarioPreview.abrirInventarioPreview(plugin,jugador, configKits, config, key,inv.getPagina());
 											}else {
 												KitManager.claimKit(jugador, key, plugin, true, false, false);

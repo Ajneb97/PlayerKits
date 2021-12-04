@@ -1,7 +1,6 @@
 package pk.ajneb97.managers;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -12,8 +11,10 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import net.md_5.bungee.api.ChatColor;
 import pk.ajneb97.InventarioJugador;
 import pk.ajneb97.PlayerKits;
+import pk.ajneb97.otros.MensajesUtils;
 
 public class InventarioPreview implements Listener{
 	
@@ -24,11 +25,11 @@ public class InventarioPreview implements Listener{
 
 	public static void abrirInventarioPreview(PlayerKits plugin,Player jugador,FileConfiguration kits,FileConfiguration config,String kit,int pagina) {
 		int slots = Integer.valueOf(config.getString("Config.previewInventorySize"));
-		Inventory inv = Bukkit.createInventory(null, slots, ChatColor.translateAlternateColorCodes('&', config.getString("Messages.previewInventoryName")));
+		Inventory inv = Bukkit.createInventory(null, slots, MensajesUtils.getMensajeColor(config.getString("Messages.previewInventoryName")));
 		if(config.getString("Config.kit_preview_back_item").equals("true")) {
 			ItemStack item = new ItemStack(Material.ARROW);
 			ItemMeta meta = item.getItemMeta();
-			meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', config.getString("Messages.backItemName")));
+			meta.setDisplayName(MensajesUtils.getMensajeColor(config.getString("Messages.backItemName")));
 			item.setItemMeta(meta);
 			inv.setItem(Integer.valueOf(config.getString("Config.preview_inventory_back_item_slot")), item);
 		}
@@ -38,8 +39,8 @@ public class InventarioPreview implements Listener{
 		int slot = 0;
 		if(!kits.contains("Kits."+kit+".Items")) {
 			//No tiene items, solo comandos?
-			String prefix = ChatColor.translateAlternateColorCodes('&', config.getString("Messages.prefix"));
-			jugador.sendMessage(prefix+ChatColor.translateAlternateColorCodes('&', config.getString("Messages.noPreviewError"))); 
+			String prefix = config.getString("Messages.prefix");
+			jugador.sendMessage(MensajesUtils.getMensajeColor(prefix+config.getString("Messages.noPreviewError")));
 			return;
 		}
 		for(String n : kits.getConfigurationSection("Kits."+kit+".Items").getKeys(false)) {

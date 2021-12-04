@@ -3,7 +3,6 @@ package pk.ajneb97.managers;
 import java.util.List;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -20,6 +19,7 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import me.clip.placeholderapi.PlaceholderAPI;
+import net.md_5.bungee.api.ChatColor;
 import pk.ajneb97.InventarioJugador;
 import pk.ajneb97.PlayerKits;
 import pk.ajneb97.otros.MensajesUtils;
@@ -52,7 +52,8 @@ public class InventarioManager{
 	protected boolean update(Player jugador,int pagina) {
 		FileConfiguration config = plugin.getConfig();
 		FileConfiguration configKits = plugin.getKits();
-		String pathInventory = ChatColor.translateAlternateColorCodes('&', config.getString("Messages.inventoryName"));
+		
+		String pathInventory = MensajesUtils.getMensajeColor(config.getString("Messages.inventoryName"));
 		String pathInventoryM = ChatColor.stripColor(pathInventory);
 		Inventory inv = jugador.getOpenInventory().getTopInventory();
 		int paginasTotales = getPaginasTotales(configKits);
@@ -83,7 +84,7 @@ public class InventarioManager{
 					}
 					meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES,ItemFlag.HIDE_ENCHANTS);
 					if(Bukkit.getVersion().contains("1.14") || Bukkit.getVersion().contains("1.15") || Bukkit.getVersion().contains("1.16")
-							 || Bukkit.getVersion().contains("1.17")) {
+							 || Bukkit.getVersion().contains("1.17")|| Bukkit.getVersion().contains("1.18")) {
 		    			  if(config.contains("Config.Inventory."+key+".custom_model_data")){
 		    				  int customModelData = Integer.valueOf(config.getString("Config.Inventory."+key+".custom_model_data"));
 		    				  meta.setCustomModelData(customModelData);
@@ -198,7 +199,7 @@ public class InventarioManager{
 	
 	public static void abrirInventarioMain(FileConfiguration config,PlayerKits plugin,Player jugador,int pagina) {
 		int size = Integer.valueOf(config.getString("Config.inventorySize"));
-		Inventory inv = Bukkit.createInventory(null, size, ChatColor.translateAlternateColorCodes('&', config.getString("Messages.inventoryName")));
+		Inventory inv = Bukkit.createInventory(null, size, MensajesUtils.getMensajeColor(config.getString("Messages.inventoryName")));
 		jugador.openInventory(inv);
 		InventarioManager invM = new InventarioManager(plugin);
 		plugin.agregarInventarioJugador(new InventarioJugador(jugador,pagina,invM,"main"));

@@ -1,17 +1,18 @@
 package pk.ajneb97;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 
+import pk.ajneb97.otros.MensajesUtils;
+
 public class Checks {
 
 	public static boolean checkTodo(PlayerKits plugin,CommandSender jugador){
 		FileConfiguration config = plugin.getConfig();
-		String nombre = ChatColor.translateAlternateColorCodes('&', config.getString("Messages.prefix"));
+		String nombre = config.getString("Messages.prefix");
 		String mensaje = nombre+config.getString("Messages.materialNameError");
 		
 		//Check config.yml
@@ -42,7 +43,7 @@ public class Checks {
 			   
 			   return true;
 		   }catch(Exception e){
-			   jugador.sendMessage(ChatColor.translateAlternateColorCodes('&', mensaje.replace("%material%", key)));
+			   jugador.sendMessage(MensajesUtils.getMensajeColor(mensaje.replace("%material%", key)));
 			   return false;
 		   }
 	}

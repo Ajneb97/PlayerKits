@@ -10,6 +10,11 @@
         <artifactId>HikariCP</artifactId>
         <version>4.0.3</version>
       </dependency>
+      <dependency>
+    	<groupId>org.slf4j</groupId>
+    	<artifactId>slf4j-nop</artifactId>
+    	<version>1.7.25</version>
+	  </dependency>
   </dependencies>
   <build>
     <sourceDirectory>src</sourceDirectory>

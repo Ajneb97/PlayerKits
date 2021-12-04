@@ -4,7 +4,6 @@ package pk.ajneb97;
 
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -13,11 +12,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.metadata.FixedMetadataValue;
 
+import net.md_5.bungee.api.ChatColor;
 import pk.ajneb97.managers.InventarioEditar;
 import pk.ajneb97.managers.InventarioManager;
 import pk.ajneb97.managers.InventarioPreview;
 import pk.ajneb97.managers.JugadorManager;
 import pk.ajneb97.managers.KitManager;
+import pk.ajneb97.otros.MensajesUtils;
 import pk.ajneb97.otros.Utilidades;
 
 
@@ -33,14 +34,14 @@ public class Comando implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args){
 		FileConfiguration config = plugin.getConfig();
 		FileConfiguration configKits = plugin.getKits();
-		String prefix = ChatColor.translateAlternateColorCodes('&', config.getString("Messages.prefix"));
+		String prefix = config.getString("Messages.prefix");
 		if (!(sender instanceof Player)){
 		   if(args.length > 0) {
 			   if(args[0].equalsIgnoreCase("reload")) {
 				   plugin.reloadConfig();
 				   plugin.reloadKits();
 				   plugin.reloadPlayerDataSaveTask();
-				   sender.sendMessage(prefix+ChatColor.translateAlternateColorCodes('&', config.getString("Messages.configReload")));
+				   sender.sendMessage(MensajesUtils.getMensajeColor(prefix+config.getString("Messages.configReload")));
 			   }else if(args[0].equalsIgnoreCase("give")) {
 				   //kit give <kit> <jugador> 
 				   give(sender,args,prefix,config,configKits);
@@ -64,18 +65,18 @@ public class Comando implements CommandExecutor {
 					   if(kit == null) {
 						   if(KitManager.save(args[1],configKits,config,jugador)) {
 							   plugin.saveKits();
-							   jugador.sendMessage(prefix+ChatColor.translateAlternateColorCodes('&', config.getString("Messages.kitCreated").replace("%name%", args[1]))); 
+							   jugador.sendMessage(MensajesUtils.getMensajeColor(prefix+config.getString("Messages.kitCreated").replace("%name%", args[1]))); 
 						   }else {
-							   jugador.sendMessage(prefix+ChatColor.translateAlternateColorCodes('&', config.getString("Messages.inventoryEmpty"))); 
+							   jugador.sendMessage(MensajesUtils.getMensajeColor(prefix+config.getString("Messages.inventoryEmpty"))); 
 						   }	   
-					   }else {
-						   jugador.sendMessage(prefix+ChatColor.translateAlternateColorCodes('&', config.getString("Messages.kitAlreadyExists").replace("%name%", kit))); 
+					   }else {   
+						   jugador.sendMessage(MensajesUtils.getMensajeColor(prefix+config.getString("Messages.kitAlreadyExists").replace("%name%", kit))); 
 					   }
 				   }else {
-					   jugador.sendMessage(prefix+ChatColor.translateAlternateColorCodes('&', config.getString("Messages.commandCreateError"))); 
+					   jugador.sendMessage(MensajesUtils.getMensajeColor(prefix+config.getString("Messages.commandCreateError"))); 
 				   }
 			   }else {
-				   jugador.sendMessage(prefix+ChatColor.translateAlternateColorCodes('&', config.getString("Messages.noPermissions")));
+				   jugador.sendMessage(MensajesUtils.getMensajeColor(prefix+config.getString("Messages.noPermissions"))); 
 			   }
 		   }else if(args[0].equalsIgnoreCase("delete")) {
 			   if(jugador.isOp() || jugador.hasPermission("playerkits.admin")) {
@@ -84,28 +85,28 @@ public class Comando implements CommandExecutor {
 					   if(kit != null) {
 						   configKits.set("Kits."+kit, null);
 						   plugin.saveKits();
-						   jugador.sendMessage(prefix+ChatColor.translateAlternateColorCodes('&', config.getString("Messages.kitRemoved").replace("%name%", kit))); 
+						   jugador.sendMessage(MensajesUtils.getMensajeColor(prefix+config.getString("Messages.kitRemoved").replace("%name%", kit))); 
 					   }else {
-						   jugador.sendMessage(prefix+ChatColor.translateAlternateColorCodes('&', config.getString("Messages.kitDoesNotExists").replace("%name%", args[1]))); 
+						   jugador.sendMessage(MensajesUtils.getMensajeColor(prefix+config.getString("Messages.kitDoesNotExists").replace("%name%", args[1])));  
 					   }
 				   }else {
-					   jugador.sendMessage(prefix+ChatColor.translateAlternateColorCodes('&', config.getString("Messages.commandDeleteError"))); 
+					   jugador.sendMessage(MensajesUtils.getMensajeColor(prefix+config.getString("Messages.commandDeleteError"))); 
 				   }
 			   }else {
-				   jugador.sendMessage(prefix+ChatColor.translateAlternateColorCodes('&', config.getString("Messages.noPermissions")));
+				   jugador.sendMessage(MensajesUtils.getMensajeColor(prefix+config.getString("Messages.noPermissions"))); 
 			   }
 		   }else if(args[0].equalsIgnoreCase("open")) {
 			   //Abrir inventario
 			   if(jugador.isOp() || jugador.hasPermission("playerkits.admin")) {
 				   open(sender,args,prefix,config,configKits);	  
 			   }else {
-				   jugador.sendMessage(prefix+ChatColor.translateAlternateColorCodes('&', config.getString("Messages.noPermissions")));
+				   jugador.sendMessage(MensajesUtils.getMensajeColor(prefix+config.getString("Messages.noPermissions"))); 
 			   }	   
 		   }else if(args[0].equalsIgnoreCase("reset")) {
 			   if(jugador.isOp() || jugador.hasPermission("playerkits.admin")) {
 				   reset(sender,args,prefix,config,configKits);  
 			   }else {
-				   jugador.sendMessage(prefix+ChatColor.translateAlternateColorCodes('&', config.getString("Messages.noPermissions")));
+				   jugador.sendMessage(MensajesUtils.getMensajeColor(prefix+config.getString("Messages.noPermissions"))); 
 			   }
 		   }
 		   else if(args[0].equalsIgnoreCase("claim")) {
@@ -115,13 +116,13 @@ public class Comando implements CommandExecutor {
 					   if(configKits.contains("Kits."+kit+".slot") || jugador.isOp() || jugador.hasPermission("playerkits.admin")) {
 						   KitManager.claimKit(jugador, kit, plugin, true, false, false);
 					   }else {
-						   jugador.sendMessage(prefix+ChatColor.translateAlternateColorCodes('&', config.getString("Messages.kitDoesNotExists").replace("%name%", args[1]))); 
+						   jugador.sendMessage(MensajesUtils.getMensajeColor(prefix+config.getString("Messages.kitDoesNotExists").replace("%name%", args[1]))); 
 					   }
 				   }else {
-					   jugador.sendMessage(prefix+ChatColor.translateAlternateColorCodes('&', config.getString("Messages.kitDoesNotExists").replace("%name%", args[1])));
+					   jugador.sendMessage(MensajesUtils.getMensajeColor(prefix+config.getString("Messages.kitDoesNotExists").replace("%name%", args[1]))); 
 				   }
 			   }else {
-				   jugador.sendMessage(prefix+ChatColor.translateAlternateColorCodes('&', config.getString("Messages.commandClaimError"))); 
+				   jugador.sendMessage(MensajesUtils.getMensajeColor(prefix+config.getString("Messages.commandClaimError"))); 
 			   }
 		   }else if(args[0].equalsIgnoreCase("preview")) {
 			   if(args.length >= 2) {
@@ -130,41 +131,41 @@ public class Comando implements CommandExecutor {
 					   if(configKits.contains("Kits."+kit+".slot") || jugador.isOp() || jugador.hasPermission("playerkits.admin")) {
 						   InventarioPreview.abrirInventarioPreview(plugin, jugador, configKits, config, kit, 1);
 					   }else {
-						   jugador.sendMessage(prefix+ChatColor.translateAlternateColorCodes('&', config.getString("Messages.kitDoesNotExists").replace("%name%", args[1]))); 
+						   jugador.sendMessage(MensajesUtils.getMensajeColor(prefix+config.getString("Messages.kitDoesNotExists").replace("%name%", args[1]))); 
 					   }	   
 				   }else {
-					   jugador.sendMessage(prefix+ChatColor.translateAlternateColorCodes('&', config.getString("Messages.kitDoesNotExists").replace("%name%", args[1])));
+					   jugador.sendMessage(MensajesUtils.getMensajeColor(prefix+config.getString("Messages.kitDoesNotExists").replace("%name%", args[1]))); 
 				   }
 			   }else {
-				   jugador.sendMessage(prefix+ChatColor.translateAlternateColorCodes('&', config.getString("Messages.commandPreviewError"))); 
+				   jugador.sendMessage(MensajesUtils.getMensajeColor(prefix+config.getString("Messages.commandPreviewError"))); 
 			   }
 		   }
 		   else if(args[0].equalsIgnoreCase("list")) {
 			   if(jugador.isOp() || jugador.hasPermission("playerkits.admin") || jugador.hasPermission("playerkits.list")) {
-				   jugador.sendMessage(prefix+ChatColor.translateAlternateColorCodes('&', config.getString("Messages.commandList")));
+				   jugador.sendMessage(MensajesUtils.getMensajeColor(prefix+config.getString("Messages.commandList"))); 
 				   int c = 1;
 				   JugadorManager jManager = plugin.getJugadorManager();
 				   if(configKits.contains("Kits")) {
 					   for(String key : configKits.getConfigurationSection("Kits").getKeys(false)) {
 						   if(configKits.contains("Kits."+key+".slot") || jugador.isOp() || jugador.hasPermission("playerkits.admin")) {
 							   if(configKits.contains("Kits."+key+".permission") && !jugador.hasPermission(configKits.getString("Kits."+key+".permission"))) {
-									jugador.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString("Messages.commandListKitNoPermissions").replace("%number%", c+"").replace("%kit%", key)));
+								   jugador.sendMessage(MensajesUtils.getMensajeColor(config.getString("Messages.commandListKitNoPermissions").replace("%number%", c+"").replace("%kit%", key))); 
 								}else {
 									if(configKits.contains("Kits."+key+".one_time") && configKits.getString("Kits."+key+".one_time").equals("true")
 											&& jManager.isOneTime(jugador, key)) {
-										jugador.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString("Messages.commandListKitOneTime").replace("%number%", c+"").replace("%kit%", key)));
+										jugador.sendMessage(MensajesUtils.getMensajeColor(config.getString("Messages.commandListKitOneTime").replace("%number%", c+"").replace("%kit%", key))); 
 									}else {
 										boolean cooldownReady = true;
 										if(configKits.contains("Kits."+key+".cooldown")) {
 											String cooldown = Utilidades.getCooldown(key, jugador, configKits, config, jManager);
 											if(!cooldown.equals("ready")) {
 												cooldownReady = false;
-												jugador.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString("Messages.commandListKitInCooldown").replace("%number%", c+"").replace("%kit%", key)
-														.replace("%time%", cooldown)));
+												jugador.sendMessage(MensajesUtils.getMensajeColor(config.getString("Messages.commandListKitInCooldown").replace("%number%", c+"").replace("%kit%", key)
+														.replace("%time%", cooldown))); 
 											}
 										}
 										if(cooldownReady) {
-											jugador.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString("Messages.commandListKit").replace("%number%", c+"").replace("%kit%", key)));
+											jugador.sendMessage(MensajesUtils.getMensajeColor(config.getString("Messages.commandListKit").replace("%number%", c+"").replace("%kit%", key))); 
 										}
 									}	
 								}
@@ -174,7 +175,7 @@ public class Comando implements CommandExecutor {
 					   }
 				   }
 			   }else {
-				   jugador.sendMessage(prefix+ChatColor.translateAlternateColorCodes('&', config.getString("Messages.noPermissions")));
+				   jugador.sendMessage(MensajesUtils.getMensajeColor(prefix+config.getString("Messages.noPermissions"))); 
 			   }
 		   }
 		   else if(args[0].equalsIgnoreCase("reload")) {
@@ -182,9 +183,9 @@ public class Comando implements CommandExecutor {
 				   plugin.reloadConfig();
 				   plugin.reloadKits();
 				   plugin.reloadPlayerDataSaveTask();
-				   jugador.sendMessage(prefix+ChatColor.translateAlternateColorCodes('&', config.getString("Messages.configReload")));
+				   jugador.sendMessage(MensajesUtils.getMensajeColor(prefix+config.getString("Messages.configReload"))); 
 			   }else {
-				   jugador.sendMessage(prefix+ChatColor.translateAlternateColorCodes('&', config.getString("Messages.noPermissions")));
+				   jugador.sendMessage(MensajesUtils.getMensajeColor(prefix+config.getString("Messages.noPermissions"))); 
 			   }
 		   }else if(args[0].equalsIgnoreCase("edit")) {
 			   if(jugador.isOp() || jugador.hasPermission("playerkits.admin")) {
@@ -193,13 +194,13 @@ public class Comando implements CommandExecutor {
 					   if(kit != null) {
 						   InventarioEditar.crearInventario(jugador,kit,plugin);
 					   }else {
-						   jugador.sendMessage(prefix+ChatColor.translateAlternateColorCodes('&', config.getString("Messages.kitDoesNotExists").replace("%name%", args[1]))); 
+						   jugador.sendMessage(MensajesUtils.getMensajeColor(prefix+config.getString("Messages.kitDoesNotExists").replace("%name%", args[1]))); 
 					   }
 				   }else {
-					   jugador.sendMessage(prefix+ChatColor.translateAlternateColorCodes('&', config.getString("Messages.commandEditError"))); 
+					   jugador.sendMessage(MensajesUtils.getMensajeColor(prefix+config.getString("Messages.commandEditError"))); 
 				   }
 			   }else {
-				   jugador.sendMessage(prefix+ChatColor.translateAlternateColorCodes('&', config.getString("Messages.noPermissions")));
+				   jugador.sendMessage(MensajesUtils.getMensajeColor(prefix+config.getString("Messages.noPermissions"))); 
 			   }
 		   }
 		   else if(args[0].equalsIgnoreCase("give")) {
@@ -207,7 +208,7 @@ public class Comando implements CommandExecutor {
 			   if(jugador.isOp() || jugador.hasPermission("playerkits.admin")) {
 				   give(sender,args,prefix,config,configKits);
 			   }else {
-				   jugador.sendMessage(prefix+ChatColor.translateAlternateColorCodes('&', config.getString("Messages.noPermissions")));
+				   jugador.sendMessage(MensajesUtils.getMensajeColor(prefix+config.getString("Messages.noPermissions"))); 
 			   }
 		   }
 		   else {
@@ -228,7 +229,7 @@ public class Comando implements CommandExecutor {
 				   jugador.sendMessage(ChatColor.translateAlternateColorCodes('&',""));
 				   jugador.sendMessage(ChatColor.translateAlternateColorCodes('&',"&7[ [ &8[&4PlayerKits&8] &7] ]"));
 			   }else {
-				   jugador.sendMessage(prefix+ChatColor.translateAlternateColorCodes('&', config.getString("Messages.noPermissions"))); 
+				   jugador.sendMessage(MensajesUtils.getMensajeColor(prefix+config.getString("Messages.noPermissions"))); 
 			   }
 		   }
 	   }else {
@@ -257,23 +258,21 @@ public class Comando implements CommandExecutor {
 						   pag = Integer.valueOf(args[2]);
 						   int pagsTotales = InventarioManager.getPaginasTotales(configKits);
 						   if(pag > pagsTotales) {
-							   sender.sendMessage(prefix+ChatColor.translateAlternateColorCodes('&', config.getString("Messages.errorPage"))); 
+							   sender.sendMessage(MensajesUtils.getMensajeColor(prefix+config.getString("Messages.errorPage"))); 
 							   return;
 						   }
 					   }catch(NumberFormatException e) {
-						   sender.sendMessage(prefix+ChatColor.translateAlternateColorCodes('&', config.getString("Messages.errorPage"))); 
+						   sender.sendMessage(MensajesUtils.getMensajeColor(prefix+config.getString("Messages.errorPage"))); 
 						   return;
 					   }
 				   }
 				   InventarioManager.abrirInventarioMain(config, plugin, player, pag);
-				   sender.sendMessage(prefix+ChatColor.translateAlternateColorCodes('&', config.getString("Messages.kitInventoryOpen")
-						   .replace("%player%", args[1])));
+				   sender.sendMessage(MensajesUtils.getMensajeColor(prefix+config.getString("Messages.kitInventoryOpen").replace("%player%", args[1]))); 
 			   }else {
-				   sender.sendMessage(prefix+ChatColor.translateAlternateColorCodes('&', config.getString("Messages.playerNotOnline")
-						   .replace("%player%", args[1])));
+				   sender.sendMessage(MensajesUtils.getMensajeColor(prefix+config.getString("Messages.playerNotOnline").replace("%player%", args[1]))); 
 			   }
 		   }else {
-			   sender.sendMessage(prefix+ChatColor.translateAlternateColorCodes('&', config.getString("Messages.commandOpenError")));
+			   sender.sendMessage(MensajesUtils.getMensajeColor(prefix+config.getString("Messages.commandOpenError"))); 
 		   }
 	}
 	
@@ -284,38 +283,38 @@ public class Comando implements CommandExecutor {
 				   Player player = Bukkit.getPlayer(args[2]);
 				   if(player != null) {
 					   KitManager.claimKit(player, kit, plugin, true, true, false);
-					   sender.sendMessage(prefix+ChatColor.translateAlternateColorCodes('&', config.getString("Messages.kitGive").replace("%player%", args[2]).replace("%kit%", kit))); 
+					   sender.sendMessage(MensajesUtils.getMensajeColor(prefix+config.getString("Messages.kitGive").replace("%player%", args[2]).replace("%kit%", kit))); 
 				   }else {
-					   sender.sendMessage(prefix+ChatColor.translateAlternateColorCodes('&', config.getString("Messages.playerNotOnline").replace("%player%", args[2]))); 
+					   sender.sendMessage(MensajesUtils.getMensajeColor(prefix+config.getString("Messages.playerNotOnline").replace("%player%", args[2]))); 
 				   }
 			   }else {
-				   sender.sendMessage(prefix+ChatColor.translateAlternateColorCodes('&', config.getString("Messages.kitDoesNotExists").replace("%name%", args[1]))); 
+				   sender.sendMessage(MensajesUtils.getMensajeColor(prefix+config.getString("Messages.kitDoesNotExists").replace("%name%", args[1])));
 			   }
 		   }else {
-			   sender.sendMessage(prefix+ChatColor.translateAlternateColorCodes('&', config.getString("Messages.commandGiveError"))); 
+			   sender.sendMessage(MensajesUtils.getMensajeColor(prefix+config.getString("Messages.commandGiveError")));
 		   }
 	}
 	
 	public void reset(CommandSender sender,String[] args,String prefix,FileConfiguration config,FileConfiguration configKits) {
 		// /kits reset <kit> <player>
 		if(args.length < 3) {
-			sender.sendMessage(prefix+ChatColor.translateAlternateColorCodes('&', config.getString("Messages.commandResetError"))); 
+			sender.sendMessage(MensajesUtils.getMensajeColor(prefix+config.getString("Messages.commandResetError")));
 			return;
 		}
 		
 		String nombreJugador = args[2];
 		String kit = getKit(configKits,args[1]);
 		if(kit == null) {
-			sender.sendMessage(prefix+ChatColor.translateAlternateColorCodes('&', config.getString("Messages.kitDoesNotExists").replace("%name%", args[1])));
+			sender.sendMessage(MensajesUtils.getMensajeColor(prefix+config.getString("Messages.kitDoesNotExists").replace("%name%", args[1])));
 			return;
 		}
 		
 		if(plugin.getJugadorManager().reiniciarKit(nombreJugador, kit)) {
-			sender.sendMessage(prefix+ChatColor.translateAlternateColorCodes('&', config.getString("Messages.kitResetCorrect")
-					.replace("%kit%", args[1]).replace("%player%", nombreJugador)));
+			sender.sendMessage(MensajesUtils.getMensajeColor(prefix+config.getString("Messages.kitResetCorrect")
+			.replace("%kit%", args[1]).replace("%player%", nombreJugador)));
 		}else {
-			sender.sendMessage(prefix+ChatColor.translateAlternateColorCodes('&', config.getString("Messages.kitResetFail")
-					.replace("%kit%", args[1]).replace("%player%", nombreJugador)));
+			sender.sendMessage(MensajesUtils.getMensajeColor(prefix+config.getString("Messages.kitResetFail")
+			.replace("%kit%", args[1]).replace("%player%", nombreJugador)));
 		}
 	}
 	

@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.FireworkEffect;
@@ -42,6 +41,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
 import me.clip.placeholderapi.PlaceholderAPI;
+import net.md_5.bungee.api.ChatColor;
 import net.milkbowl.vault.economy.Economy;
 import pk.ajneb97.InventarioJugador;
 import pk.ajneb97.PlayerKits;
@@ -106,7 +106,7 @@ public class KitManager {
 		int amount = item.getAmount();
 		String idtext = id+"";
 		if(!Bukkit.getVersion().contains("1.13") && !Bukkit.getVersion().contains("1.14") && !Bukkit.getVersion().contains("1.15")
-				&& !Bukkit.getVersion().contains("1.16") && !Bukkit.getVersion().contains("1.17")){
+				&& !Bukkit.getVersion().contains("1.16") && !Bukkit.getVersion().contains("1.17")&& !Bukkit.getVersion().contains("1.18")){
 			if(id == Material.POTION){
 				datavalue = item.getDurability();
 			}else{
@@ -210,7 +210,7 @@ public class KitManager {
 		boolean esBanner = false;
 		boolean esEscudo = false;
 		if(Bukkit.getVersion().contains("1.13") || Bukkit.getVersion().contains("1.14") || Bukkit.getVersion().contains("1.15")
-				|| Bukkit.getVersion().contains("1.16") || Bukkit.getVersion().contains("1.17")){
+				|| Bukkit.getVersion().contains("1.16") || Bukkit.getVersion().contains("1.17")|| Bukkit.getVersion().contains("1.18")){
 			if(id.name().contains("BANNER") && !id.name().contains("PATTERN")){
 				esBanner = true;
 			}else if(id == Material.SHIELD) {
@@ -254,7 +254,7 @@ public class KitManager {
 				}
 				kitConfig.set(path+".banner-pattern", patternsPath);
 				if(!Bukkit.getVersion().contains("1.13") && !Bukkit.getVersion().contains("1.14") && !Bukkit.getVersion().contains("1.15")
-						&& !Bukkit.getVersion().contains("1.16") && !Bukkit.getVersion().contains("1.17")){
+						&& !Bukkit.getVersion().contains("1.16") && !Bukkit.getVersion().contains("1.17") && !Bukkit.getVersion().contains("1.18")){
 					kitConfig.set(path+".banner-color", banner.getBaseColor().name());
 				}else {
 					kitConfig.set(path+".banner-color", banner.getType().name());
@@ -265,7 +265,7 @@ public class KitManager {
 		
 		Utilidades u = new Utilidades();
 		if(Bukkit.getVersion().contains("1.13") || Bukkit.getVersion().contains("1.14") || Bukkit.getVersion().contains("1.15")
-				|| Bukkit.getVersion().contains("1.16") || Bukkit.getVersion().contains("1.17")){
+				|| Bukkit.getVersion().contains("1.16") || Bukkit.getVersion().contains("1.17")|| Bukkit.getVersion().contains("1.18")){
 			if(id == Material.getMaterial("PLAYER_HEAD")){
 				u.guardarSkull(item,kitConfig,path,"");				
 			}
@@ -281,13 +281,13 @@ public class KitManager {
 		u.guardarNBT(item, kitConfig, path);
 		
 		if(datavalue != 0 && !Bukkit.getVersion().contains("1.13") && !Bukkit.getVersion().contains("1.14") && !Bukkit.getVersion().contains("1.15")
-				&& !Bukkit.getVersion().contains("1.16") && !Bukkit.getVersion().contains("1.17")){
+				&& !Bukkit.getVersion().contains("1.16") && !Bukkit.getVersion().contains("1.17")&& !Bukkit.getVersion().contains("1.18")){
 			idtext = idtext+":"+datavalue;
 		}
 		kitConfig.set(path+".id", idtext+"");
 		kitConfig.set(path+".amount", amount+"");
 		if(Bukkit.getVersion().contains("1.13") || Bukkit.getVersion().contains("1.14") || Bukkit.getVersion().contains("1.15")
-				|| Bukkit.getVersion().contains("1.16") || Bukkit.getVersion().contains("1.17")) {
+				|| Bukkit.getVersion().contains("1.16") || Bukkit.getVersion().contains("1.17") || Bukkit.getVersion().contains("1.18")) {
 			kitConfig.set(path+".durability", item.getDurability()+"");
 		}
 		if(item.hasItemMeta()){
@@ -339,7 +339,7 @@ public class KitManager {
 				kitConfig.set(path+".unbreakable", "false");
 			}
 			if(Bukkit.getVersion().contains("1.14") || Bukkit.getVersion().contains("1.15") || Bukkit.getVersion().contains("1.16")
-					|| Bukkit.getVersion().contains("1.17")) {
+					|| Bukkit.getVersion().contains("1.17")|| Bukkit.getVersion().contains("1.18")) {
 				if(item.getItemMeta().hasCustomModelData()) {
 					kitConfig.set(path+".custom_model_data", item.getItemMeta().getCustomModelData()+"");
 				}
@@ -388,7 +388,9 @@ public class KitManager {
 		  } 
 		  ItemStack crafteos = Utilidades.getItem(id,pathamountInt,"");
 		  String pathdurability = path+".durability";
-		  if((Bukkit.getVersion().contains("1.13") || Bukkit.getVersion().contains("1.14") || Bukkit.getVersion().contains("1.15")) && kitConfig.contains(pathdurability)) {
+		  if((Bukkit.getVersion().contains("1.13") || Bukkit.getVersion().contains("1.14") || Bukkit.getVersion().contains("1.15")
+				  || Bukkit.getVersion().contains("1.16") || Bukkit.getVersion().contains("1.17")
+				  || Bukkit.getVersion().contains("1.18")) && kitConfig.contains(pathdurability)) {
 			  crafteos.setDurability(Short.valueOf(kitConfig.getString(pathdurability)));
 		  }
 		  if((crafteos.getType().name().contains("POTION") || crafteos.getType().name().contains("TIPPED_ARROW"))) {
@@ -501,7 +503,7 @@ public class KitManager {
 		  		boolean esBanner = false;
 				boolean esEscudo = false;
 				if(Bukkit.getVersion().contains("1.13") || Bukkit.getVersion().contains("1.14") || Bukkit.getVersion().contains("1.15")
-						|| Bukkit.getVersion().contains("1.16") || Bukkit.getVersion().contains("1.17")){
+						|| Bukkit.getVersion().contains("1.16") || Bukkit.getVersion().contains("1.17")|| Bukkit.getVersion().contains("1.18")){
 					if(crafteos.getType().name().contains("BANNER")){
 						esBanner = true;
 					}else if(crafteos.getType() == Material.SHIELD) {
@@ -543,7 +545,7 @@ public class KitManager {
 					BlockStateMeta meta = (BlockStateMeta) crafteos.getItemMeta();
 					Banner banner = (Banner) meta.getBlockState();
 					if(!Bukkit.getVersion().contains("1.13") && !Bukkit.getVersion().contains("1.14") && !Bukkit.getVersion().contains("1.15")
-							&& !Bukkit.getVersion().contains("1.16") && !Bukkit.getVersion().contains("1.17")){
+							&& !Bukkit.getVersion().contains("1.16") && !Bukkit.getVersion().contains("1.17") && !Bukkit.getVersion().contains("1.18")){
 		  		  		String mainColor = kitConfig.getString(path+".banner-color");
 		  		  		banner.setBaseColor(DyeColor.valueOf(mainColor));
 		  		  	}else {
@@ -605,7 +607,7 @@ public class KitManager {
     			  crafteosMeta.addItemFlags(ItemFlag.valueOf(flags.get(i)));
     		  }
     		  if(Bukkit.getVersion().contains("1.14") || Bukkit.getVersion().contains("1.15") || Bukkit.getVersion().contains("1.16")
-    				  || Bukkit.getVersion().contains("1.17")) {
+    				  || Bukkit.getVersion().contains("1.17") || Bukkit.getVersion().contains("1.18")) {
     			  if(kitConfig.contains(path+".custom_model_data")){
     				  int customModelData = Integer.valueOf(kitConfig.getString(path+".custom_model_data"));
     				  crafteosMeta.setCustomModelData(customModelData);
@@ -633,24 +635,24 @@ public class KitManager {
 		FileConfiguration config = plugin.getConfig();
 		FileConfiguration configKits = plugin.getKits();
 		JugadorManager jManager = plugin.getJugadorManager();
-		String prefix = ChatColor.translateAlternateColorCodes('&', config.getString("Messages.prefix"));
+		String prefix = config.getString("Messages.prefix");
 		if(!ignoreValues) {
 			if(configKits.contains("Kits."+kit+".one_time") && configKits.getString("Kits."+kit+".one_time").equals("true")) {
 				if(jManager.isOneTime(jugador, kit)) {
-					jugador.sendMessage(prefix+ChatColor.translateAlternateColorCodes('&', config.getString("Messages.oneTimeError")));
+					jugador.sendMessage(MensajesUtils.getMensajeColor(prefix+config.getString("Messages.oneTimeError")));
 					errorSonido(jugador,config);
 					return;
 				}
 			}
 			if(configKits.contains("Kits."+kit+".permission") && !jugador.hasPermission(configKits.getString("Kits."+kit+".permission"))) {
-				jugador.sendMessage(prefix+ChatColor.translateAlternateColorCodes('&', config.getString("Messages.kitNoPermissions")));
+				jugador.sendMessage(MensajesUtils.getMensajeColor(prefix+config.getString("Messages.kitNoPermissions")));
 				errorSonido(jugador,config);
 				return;
 			}
 			if(configKits.contains("Kits."+kit+".cooldown")) {
 				String cooldown = Utilidades.getCooldown(kit, jugador, configKits, config, jManager);
 				if(!cooldown.equals("ready")) {
-					jugador.sendMessage(prefix+ChatColor.translateAlternateColorCodes('&', config.getString("Messages.cooldownError").replace("%time%", cooldown)));
+					jugador.sendMessage(MensajesUtils.getMensajeColor(prefix+config.getString("Messages.cooldownError").replace("%time%", cooldown)));
 					errorSonido(jugador,config);
 					return;
 				}
@@ -662,8 +664,8 @@ public class KitManager {
 					Economy econ = plugin.getEconomy();
 					double balance = econ.getBalance(jugador);
 					if(balance < price) {
-						jugador.sendMessage(prefix+ChatColor.translateAlternateColorCodes('&', config.getString("Messages.noMoneyError")
-								.replace("%current_money%", balance+"").replace("%required_money%", price+"")));
+						jugador.sendMessage(MensajesUtils.getMensajeColor(prefix+config.getString("Messages.noMoneyError")
+						.replace("%current_money%", balance+"").replace("%required_money%", price+"")));
 						errorSonido(jugador,config);
 						return;
 					}else {
@@ -751,7 +753,7 @@ public class KitManager {
 		
 		
 		if(espaciosLibres < cantidadItems && !tirarItems) {
-			jugador.sendMessage(prefix+ChatColor.translateAlternateColorCodes('&', config.getString("Messages.noSpaceError")));
+			jugador.sendMessage(MensajesUtils.getMensajeColor(prefix+config.getString("Messages.noSpaceError")));
 			errorSonido(jugador,config);
 			return;
 		}	
@@ -831,7 +833,7 @@ public class KitManager {
 		if(message) {
 			String kitReceived = config.getString("Messages.kitReceived").replace("%name%", kit);
 			if(!kitReceived.equals("") && !kitReceived.isEmpty()) {
-				jugador.sendMessage(prefix+ChatColor.translateAlternateColorCodes('&', kitReceived));
+				jugador.sendMessage(MensajesUtils.getMensajeColor(prefix+kitReceived));
 			}
 			
 		}
@@ -873,7 +875,7 @@ public class KitManager {
 			for(int i=0;i<comandos.size();i++) {
 				if(comandos.get(i).startsWith("msg %player% ")) {
 					String mensaje = comandos.get(i).replace("msg %player% ", "");
-					jugador.sendMessage(ChatColor.translateAlternateColorCodes('&', mensaje));
+					jugador.sendMessage(MensajesUtils.getMensajeColor(mensaje));
 				}else {
 					String comandoAEnviar = comandos.get(i).replace("%player%", jugador.getName());
 					Bukkit.dispatchCommand(consola, comandoAEnviar);

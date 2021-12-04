@@ -303,6 +303,11 @@ public class PlayerKits extends JavaPlugin {
 		  Path archivo = Paths.get(rutaConfig);
 		  try{
 			  String texto = new String(Files.readAllBytes(archivo));
+			  if(!texto.contains("cantPreviewError:")){
+				  getConfig().set("Messages.cantPreviewError", "&cYou can't preview this kit.");
+				  getConfig().set("Config.preview_inventory_requires_permission", false);
+				  saveConfig();
+			  }
 			  if(!texto.contains("player_data_save_time:")){
 				  getConfig().set("Config.player_data_save_time", 300);
 				  getConfig().set("Messages.noPreviewError", "&cThere is nothing to preview for this kit.");
@@ -393,7 +398,7 @@ public class PlayerKits extends JavaPlugin {
 	  public void rellenarInventarioConfig() {
 		  FileConfiguration config = getConfig();
 		  if(Bukkit.getVersion().contains("1.13") || Bukkit.getVersion().contains("1.14") || Bukkit.getVersion().contains("1.15")
-					|| Bukkit.getVersion().contains("1.16") || Bukkit.getVersion().contains("1.17")) {
+					|| Bukkit.getVersion().contains("1.16") || Bukkit.getVersion().contains("1.17") || Bukkit.getVersion().contains("1.18")) {
 			  config.set("Config.Inventory.0.id", "BLACK_STAINED_GLASS_PANE");
 			  config.set("Config.Inventory.8.id", "BLACK_STAINED_GLASS_PANE");
 			  config.set("Config.Inventory.36.id", "BLACK_STAINED_GLASS_PANE");
