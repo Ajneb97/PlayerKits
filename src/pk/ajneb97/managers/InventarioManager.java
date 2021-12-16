@@ -242,11 +242,16 @@ public class InventarioManager{
 			meta.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 1, true);
 		}
 		meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES,ItemFlag.HIDE_ENCHANTS);
+		if(configKits.contains(path+".display_item_custom_model_data")) {
+			int customModelData = configKits.getInt(path+".display_item_custom_model_data");
+			meta.setCustomModelData(customModelData);
+		}
 		item.setItemMeta(meta);
 		if(configKits.contains(path+".display_item_skulldata")) {
 			String[] skulldata = configKits.getString(path+".display_item_skulldata").split(";");
 			item = Utilidades.setSkull(item, skulldata[0], skulldata[1]);
 		}
+		
 //		else {
 //			if(configKits.contains("Kits."+kit+".display_item_skulldata")) {
 //				String[] skulldata = configKits.getString("Kits."+kit+".display_item_skulldata").split(";");

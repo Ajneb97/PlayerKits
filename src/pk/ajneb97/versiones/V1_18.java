@@ -98,20 +98,9 @@ public class V1_18 {
 					net.minecraft.nbt.NBTTagCompound propiedades = skullOwner.p("Properties");
 					if(propiedades.e("textures")){
 						net.minecraft.nbt.NBTTagList texturas = propiedades.c("textures", 10);
-						config.set(path+".skull-texture", texturas.a(0).p("Value"));
+						config.set(path+".skull-texture", texturas.a(0).l("Value"));
 					}
 					
-				}
-				if(skullOwner.e("Name")){
-					if(skullOwner.l("Name").equals("%player%")){
-						config.set(path+".skull-owner", nombreJugador);
-					}else{
-						config.set(path+".skull-owner", skullOwner.l("Name"));
-					}
-					
-				}
-				if(skullOwner.e("Id")){
-					config.set(path+".skull-id", skullOwner.l("Id"));
 				}
 			}
 		}	
@@ -133,7 +122,7 @@ public class V1_18 {
 					net.minecraft.nbt.NBTTagCompound propiedades = skullOwner.p("Properties");
 					if(propiedades.e("textures")){
 						net.minecraft.nbt.NBTTagList texturas = propiedades.c("textures", 10);
-						skullmeta = skullmeta+";"+texturas.a(0).p("Value");
+						skullmeta = skullmeta+";"+texturas.a(0).l("Value");
 					}
 					
 				}

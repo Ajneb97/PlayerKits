@@ -23,6 +23,7 @@ import com.google.common.collect.Multimap;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
@@ -104,8 +105,8 @@ public class V1_17 {
 						net.minecraft.nbt.NBTTagCompound propiedades = (net.minecraft.nbt.NBTTagCompound) skullOwner.getClass().getMethod("getCompound",String.class).invoke(skullOwner,"Properties");
 						
 						if((boolean) propiedades.getClass().getMethod("hasKey",String.class).invoke(propiedades,"textures")){
-							net.minecraft.nbt.NBTTagList texturas = (NBTTagList) propiedades.getClass().getMethod("getList",String.class,Integer.class).invoke(propiedades,"textures",10);
-							net.minecraft.nbt.NBTTagCompound compound = (NBTTagCompound) texturas.getClass().getMethod("getCompound",Integer.class).invoke(texturas,0);
+							net.minecraft.nbt.NBTTagList texturas = (NBTTagList) propiedades.getClass().getMethod("getList",String.class,int.class).invoke(propiedades,"textures",10);
+							net.minecraft.nbt.NBTTagCompound compound = (NBTTagCompound) texturas.getClass().getMethod("getCompound",int.class).invoke(texturas,0);
 							config.set(path+".skull-texture", (String) compound.getClass().getMethod("getString",String.class).invoke(compound,"Value"));
 						}
 						
@@ -146,8 +147,8 @@ public class V1_17 {
 					if((boolean) skullOwner.getClass().getMethod("hasKey",String.class).invoke(skullOwner,"Properties")){
 						net.minecraft.nbt.NBTTagCompound propiedades = (net.minecraft.nbt.NBTTagCompound) skullOwner.getClass().getMethod("getCompound",String.class).invoke(skullOwner,"Properties");
 						if((boolean) propiedades.getClass().getMethod("hasKey",String.class).invoke(propiedades,"textures")){
-							net.minecraft.nbt.NBTTagList texturas = (NBTTagList) propiedades.getClass().getMethod("getList",String.class,Integer.class).invoke(propiedades,"textures",10);
-							net.minecraft.nbt.NBTTagCompound compound = (NBTTagCompound) texturas.getClass().getMethod("getCompound",Integer.class).invoke(texturas,0);
+							net.minecraft.nbt.NBTTagList texturas = (NBTTagList) propiedades.getClass().getMethod("getList",String.class,int.class).invoke(propiedades,"textures",10);
+							net.minecraft.nbt.NBTTagCompound compound = (NBTTagCompound) texturas.getClass().getMethod("getCompound",int.class).invoke(texturas,0);
 							skullmeta = skullmeta+";"+(String) compound.getClass().getMethod("getString",String.class).invoke(compound,"Value");
 						}
 						
@@ -233,17 +234,17 @@ public class V1_17 {
 							&& !t.equals("Explosion")&& !t.equals("pages") && !t.equals("title") && !t.equals("author") && !t.equals("resolved")
 							&& !t.equals("generation")) {
 						
-						if((boolean)itemTag.getClass().getMethod("hasKeyOfType",String.class,Integer.class).invoke(itemTag,t,1)) {
+						if((boolean)itemTag.getClass().getMethod("hasKeyOfType",String.class,int.class).invoke(itemTag,t,1)) {
 							//boolean
 							listaNBT.add(t+";"+itemTag.getClass().getMethod("getBoolean",String.class).invoke(itemTag,t)+";boolean");
 							
-						}else if((boolean)itemTag.getClass().getMethod("hasKeyOfType",String.class,Integer.class).invoke(itemTag,t,3)) {
+						}else if((boolean)itemTag.getClass().getMethod("hasKeyOfType",String.class,int.class).invoke(itemTag,t,3)) {
 							//int
 							listaNBT.add(t+";"+itemTag.getClass().getMethod("getInt",String.class).invoke(itemTag,t)+";int");
-						}else if((boolean)itemTag.getClass().getMethod("hasKeyOfType",String.class,Integer.class).invoke(itemTag,t,6)) {
+						}else if((boolean)itemTag.getClass().getMethod("hasKeyOfType",String.class,int.class).invoke(itemTag,t,6)) {
 							//double
 							listaNBT.add(t+";"+itemTag.getClass().getMethod("getDouble",String.class).invoke(itemTag,t)+";double");
-						}else if((boolean)itemTag.getClass().getMethod("hasKeyOfType",String.class,Integer.class).invoke(itemTag,t,8)) {
+						}else if((boolean)itemTag.getClass().getMethod("hasKeyOfType",String.class,int.class).invoke(itemTag,t,8)) {
 							//String
 							listaNBT.add(t+";"+itemTag.getClass().getMethod("getString",String.class).invoke(itemTag,t));
 						}else {
@@ -280,7 +281,7 @@ public class V1_17 {
 					try {
 						
 						net.minecraft.nbt.NBTTagCompound tagNew =  (NBTTagCompound) net.minecraft.nbt.MojangsonParser.class.getMethod("parse", String.class).invoke(null, sep[1]);
-						tag.getClass().getMethod("set",String.class,NBTTagCompound.class).invoke(tag,sep[0],tagNew);
+						tag.getClass().getMethod("set",String.class,NBTBase.class).invoke(tag,sep[0],tagNew);
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -289,11 +290,11 @@ public class V1_17 {
 				}else {
 					if(sep.length == 3) {
 						if(sep[2].equals("boolean")) {
-							tag.getClass().getMethod("setBoolean",String.class,Boolean.class).invoke(tag,sep[0],Boolean.valueOf(sep[1]));
+							tag.getClass().getMethod("setBoolean",String.class,boolean.class).invoke(tag,sep[0],Boolean.valueOf(sep[1]));
 						}else if(sep[2].equals("double")) {
-							tag.getClass().getMethod("setDouble",String.class,Double.class).invoke(tag,sep[0],Double.valueOf(sep[1]));
+							tag.getClass().getMethod("setDouble",String.class,double.class).invoke(tag,sep[0],Double.valueOf(sep[1]));
 						}else if(sep[2].equals("int")) {
-							tag.getClass().getMethod("setInt",String.class,Integer.class).invoke(tag,sep[0],Integer.valueOf(sep[1]));
+							tag.getClass().getMethod("setInt",String.class,int.class).invoke(tag,sep[0],Integer.valueOf(sep[1]));
 						}
 					}else {
 						tag.getClass().getMethod("setString",String.class,String.class).invoke(tag,sep[0],sep[1]);

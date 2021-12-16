@@ -104,18 +104,6 @@ public class V1_16_R3 {
 					}
 					
 				}
-				if(skullOwner.hasKey("Name")){
-					if(skullOwner.getString("Name").equals("%player%")){
-						config.set(path+".skull-owner", nombreJugador);
-					}else{
-						config.set(path+".skull-owner", skullOwner.getString("Name"));
-					}
-					
-				}
-				if(skullOwner.hasKey("Id")){
-					config.set(path+".skull-id", skullOwner.getString("Id"));
-				}
-				
 			}
 		}	
 		

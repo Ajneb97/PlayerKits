@@ -127,11 +127,18 @@ public class Utilidades {
 			meta2.setColor(Color.fromRGB(color));
 			item.setItemMeta(meta2);
 		}
+		if(kits.contains(path+".display_item_custom_model_data")) {
+			int customModelData = kits.getInt(path+".display_item_custom_model_data");
+			meta = item.getItemMeta();
+			meta.setCustomModelData(customModelData);
+			item.setItemMeta(meta);
+		}
 		item = Utilidades.setUnbreakable(item);
 		if(kits.contains(path+".display_item_skulldata")) {
 			String[] skulldata = kits.getString(path+".display_item_skulldata").split(";");
 			item = Utilidades.setSkull(item, skulldata[0], skulldata[1]);
 		}
+		
 		return item;
 	}
 	

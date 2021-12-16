@@ -383,17 +383,24 @@ public class InventarioEditar implements Listener{
 			for(String n : kits.getConfigurationSection("Kits."+kit+".Items").getKeys(false)) {
 				String path = "Kits."+kit+".Items."+n;
 				item = KitManager.getItem(kits, path, plugin.getConfig(), jugador);
-				if(!Bukkit.getVersion().contains("1.8")) {
-					List<String> loreNuevo = new ArrayList<String>();
-					ItemMeta metaNuevo = item.getItemMeta();
-					if(kits.contains(path+".offhand") && kits.getString(path+".offhand").equals("true")) {
-						loreNuevo.add(ChatColor.translateAlternateColorCodes('&', " "));
-						loreNuevo.add(ChatColor.translateAlternateColorCodes('&', "&8[&cRight Click to remove from OFFHAND&8]"));
+				
+				List<String> loreOffhand = new ArrayList<String>();
+				ItemMeta metaNuevo = item.getItemMeta();
+				if(!Bukkit.getVersion().contains("1.8") && kits.contains(path+".offhand") && kits.getString(path+".offhand").equals("true")) {
+					loreOffhand.add(ChatColor.translateAlternateColorCodes('&', " "));
+					loreOffhand.add(ChatColor.translateAlternateColorCodes('&', "&8[&cRight Click to remove from OFFHAND&8]"));
+				}
+				if(!loreOffhand.isEmpty()) {
+					if(metaNuevo.hasLore()) {
+						List<String> loreNuevo = meta.getLore();
+						loreNuevo.addAll(loreOffhand);
+						metaNuevo.setLore(loreNuevo);
+					}else {
+						metaNuevo.setLore(loreOffhand);
 					}
-					metaNuevo.setLore(loreNuevo);
 					item.setItemMeta(metaNuevo);
 				}
-				
+
 				if(kits.contains(path+".preview_slot")) {
 					inv.setItem(Integer.valueOf(kits.getString(path+".preview_slot")), item);
 				}else {
@@ -757,7 +764,7 @@ public class InventarioEditar implements Listener{
 			Material id = item.getType();
 			int datavalue = 0;
 			if(!Bukkit.getVersion().contains("1.13") && !Bukkit.getVersion().contains("1.14") && !Bukkit.getVersion().contains("1.15")
-					&& !Bukkit.getVersion().contains("1.16") || Bukkit.getVersion().contains("1.17")|| Bukkit.getVersion().contains("1.18")){
+					&& !Bukkit.getVersion().contains("1.16") && !Bukkit.getVersion().contains("1.17")&& !Bukkit.getVersion().contains("1.18")){
 				if(id == Material.POTION){
 					datavalue = item.getDurability();
 				}else{
@@ -765,6 +772,7 @@ public class InventarioEditar implements Listener{
 				}
 			}
 			kits.set(path+".display_item_skulldata", null);
+			kits.set(path+".display_item_custom_model_data", null);
 			if(datavalue != 0) {
 				kits.set(path+".display_item", item.getType()+":"+datavalue);
 			}else {
@@ -776,6 +784,14 @@ public class InventarioEditar implements Listener{
 					|| id.equals(Material.LEATHER_HELMET) || id.equals(Material.LEATHER_LEGGINGS)) {
 				LeatherArmorMeta meta = (LeatherArmorMeta) item.getItemMeta();
 				kits.set(path+".display_item_leathercolor", meta.getColor().asRGB()+"");
+			}
+			
+			if(Bukkit.getVersion().contains("1.14") || Bukkit.getVersion().contains("1.15")
+					|| Bukkit.getVersion().contains("1.16") || Bukkit.getVersion().contains("1.17")|| Bukkit.getVersion().contains("1.18")){
+				ItemMeta meta = item.getItemMeta();
+				if(meta.hasCustomModelData()) {
+					kits.set(path+".display_item_custom_model_data", meta.getCustomModelData());
+				}
 			}
 			
 			if(Bukkit.getVersion().contains("1.13") || Bukkit.getVersion().contains("1.14") || Bukkit.getVersion().contains("1.15")
