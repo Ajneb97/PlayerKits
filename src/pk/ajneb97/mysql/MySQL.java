@@ -59,11 +59,62 @@ public class MySQL {
 //		return jugadores;
 //	}
 
-	public static void getJugador(final String nombre,final String uuid,final PlayerKits plugin,final MySQLJugadorCallback callback){
+	public static void getJugadorByUUID(final String uuid,final PlayerKits plugin,final MySQLJugadorCallback callback){
 		Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
             @Override
             public void run() {
             	ArrayList<KitJugador> kitsJugador = new ArrayList<KitJugador>();
+            	String nombre = null;
+            	try(Connection connection = plugin.getConnection()) {
+        			PreparedStatement statement = connection.prepareStatement("SELECT * FROM playerkits_data WHERE uuid=?");
+        			statement.setString(1, uuid);
+        			ResultSet resultado = statement.executeQuery();
+        			while(resultado.next()){	
+        				int buyed = resultado.getInt("BUYED");
+        				boolean buyedBool = false;
+        				if(buyed == 1) {
+        					buyedBool = true;
+        				}
+        				int oneTime = resultado.getInt("ONE_TIME");
+        				boolean oneTimeBool = false;
+        				if(oneTime == 1) {
+        					oneTimeBool = true;
+        				}
+        				long cooldown = resultado.getLong("COOLDOWN");
+        				String kit = resultado.getString("KIT_NAME");
+        				kitsJugador.add(new KitJugador(kit,oneTimeBool,cooldown,buyedBool));
+        				nombre = resultado.getString("PLAYER_NAME");
+        			}
+        		} catch (SQLException e) {
+        			// TODO Auto-generated catch block
+        			e.printStackTrace();
+        		}
+        		if(kitsJugador.size() >= 1) {
+        			final JugadorDatos j = new JugadorDatos(nombre,uuid,kitsJugador);
+        			Bukkit.getScheduler().runTask(plugin, new Runnable() {
+                        @Override
+                        public void run() {
+                            callback.alTerminar(j);
+                        }
+                    });
+        		}else {
+        			Bukkit.getScheduler().runTask(plugin, new Runnable() {
+                        @Override
+                        public void run() {
+                            callback.alTerminar(null);
+                        }
+                    });
+        		}
+            }
+		});
+	}
+	
+	public static void getJugadorByName(final String nombre,final PlayerKits plugin,final MySQLJugadorCallback callback){
+		Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
+            @Override
+            public void run() {
+            	ArrayList<KitJugador> kitsJugador = new ArrayList<KitJugador>();
+            	String uuid = null;
             	try(Connection connection = plugin.getConnection()) {
         			PreparedStatement statement = connection.prepareStatement("SELECT * FROM playerkits_data WHERE player_name=?");
         			statement.setString(1, nombre);
@@ -82,6 +133,7 @@ public class MySQL {
         				long cooldown = resultado.getLong("COOLDOWN");
         				String kit = resultado.getString("KIT_NAME");
         				kitsJugador.add(new KitJugador(kit,oneTimeBool,cooldown,buyedBool));
+        				uuid = resultado.getString("UUID");
         			}
         		} catch (SQLException e) {
         			// TODO Auto-generated catch block
@@ -148,12 +200,13 @@ public class MySQL {
             	}
             	int resultado = 0;
             	try(Connection connection = plugin.getConnection()) {
-            		PreparedStatement statement = connection.prepareStatement("UPDATE playerkits_data SET buyed=?, one_time=?, cooldown=? WHERE (uuid=? AND kit_name=?)");
+            		PreparedStatement statement = connection.prepareStatement("UPDATE playerkits_data SET buyed=?, one_time=?, cooldown=?, player_name=? WHERE (uuid=? AND kit_name=?)");
             		statement.setInt(1,  kitJugador.isBuyed() ? 1: 0);
     				statement.setInt(2, kitJugador.isOneTime() ? 1: 0);
     				statement.setLong(3, kitJugador.getCooldown());
-    				statement.setString(4, uuid);
-    				statement.setString(5, kitJugador.getNombre());
+    				statement.setString(4, name);
+    				statement.setString(5, uuid);
+    				statement.setString(6, kitJugador.getNombre());
     				resultado = statement.executeUpdate();
         		} catch (SQLException e) {
         			// TODO Auto-generated catch block
@@ -175,6 +228,22 @@ public class MySQL {
             		}
             	}
             	
+            }
+		});
+	}
+	public static void actualizarNombre(final PlayerKits plugin, final String name, final String uuid){
+		Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
+            @Override
+            public void run() {
+            	try(Connection connection = plugin.getConnection()) {
+            		PreparedStatement statement = connection.prepareStatement("UPDATE playerkits_data SET player_name=? WHERE (uuid=?)");
+    				statement.setString(1, name);
+    				statement.setString(2, uuid);
+    				statement.executeUpdate();
+        		} catch (SQLException e) {
+        			// TODO Auto-generated catch block
+        			e.printStackTrace();
+        		}
             }
 		});
 	}

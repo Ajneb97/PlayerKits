@@ -13,7 +13,6 @@ Messages:
     inventoryEmpty: "&cYou need at least 1 item on your inventory to create a kit."
     kitCreated: "&aKit &7%name% &acreated correctly."
     kitRemoved: "&aKit &7%name% &aremoved correctly."
-    inventoryName: "&9Kits"
     kitReceived: "&aKit &7%name% &areceived."
     configReload: "&aConfig Reloaded."
     seconds: 's'
@@ -65,11 +64,15 @@ Config:
     drop_items_if_full_inventory: false
     commands_before_items: false
     preview_inventory_requires_permission: false
+    claim_kit_short_command: false
     kit_error_sound: BLOCK_NOTE_BLOCK_PLING;10;0.1
     kit_claim_sound: ENTITY_PLAYER_LEVELUP;10;1.5
     kit_page_sound: BLOCK_LAVA_POP;10;1
     update_notify: true
     player_data_save_time: 300
+    inventory_pages_names:
+      1: "&9Kits"
+      2: "&bVIP Kits"
     mysql_database:
       enabled: false
       host: localhost

@@ -156,7 +156,7 @@ public class JugadorManager {
 				  k.setBuyed(true);
 				  listo = true;
 				  if(MySQL.isEnabled(plugin.getConfig())) {
-					  MySQL.crearKitJugador(plugin, j.getPlayer(), j.getUuid(), k);
+					  MySQL.crearKitJugador(plugin, jugador.getName(), j.getUuid(), k);
 				  }
 				  break;
 			  }
@@ -166,7 +166,7 @@ public class JugadorManager {
 			  KitJugador kitNuevo = new KitJugador(kit,false,0,true);
 			  j.getKits().add(kitNuevo);
 			  if(MySQL.isEnabled(plugin.getConfig())) {
-				  MySQL.crearKitJugador(plugin, j.getPlayer(), j.getUuid(), kitNuevo);
+				  MySQL.crearKitJugador(plugin, jugador.getName(), j.getUuid(), kitNuevo);
 			  }
 		  }
 	  }  
@@ -184,7 +184,7 @@ public class JugadorManager {
 				  k.setOneTime(true);
 				  listo = true;
 				  if(MySQL.isEnabled(plugin.getConfig())) {
-					  MySQL.crearKitJugador(plugin, j.getPlayer(), j.getUuid(), k);
+					  MySQL.crearKitJugador(plugin, jugador.getName(), j.getUuid(), k);
 				  }
 				  break;
 			  }
@@ -194,7 +194,7 @@ public class JugadorManager {
 			  KitJugador kitNuevo = new KitJugador(kit,true,0,false);
 			  j.getKits().add(kitNuevo);
 			  if(MySQL.isEnabled(plugin.getConfig())) {
-				  MySQL.crearKitJugador(plugin, j.getPlayer(), j.getUuid(), kitNuevo);
+				  MySQL.crearKitJugador(plugin, jugador.getName(), j.getUuid(), kitNuevo);
 			  }
 		  }
 	  } 
@@ -212,7 +212,7 @@ public class JugadorManager {
 				  k.setCooldown(millis);
 				  listo = true;
 				  if(MySQL.isEnabled(plugin.getConfig())) {
-					  MySQL.crearKitJugador(plugin, j.getPlayer(), j.getUuid(), k);
+					  MySQL.crearKitJugador(plugin, jugador.getName(), j.getUuid(), k);
 				  }
 				  break;
 			  }
@@ -222,7 +222,7 @@ public class JugadorManager {
 			  KitJugador kitNuevo = new KitJugador(kit,false,millis,false);
 			  j.getKits().add(kitNuevo);
 			  if(MySQL.isEnabled(plugin.getConfig())) {
-				  MySQL.crearKitJugador(plugin, j.getPlayer(), j.getUuid(), kitNuevo);
+				  MySQL.crearKitJugador(plugin, jugador.getName(), j.getUuid(), kitNuevo);
 			  }
 		  }
 	  } 
@@ -247,13 +247,13 @@ public class JugadorManager {
 		  return false;
 	  }
 	  
-	  public void setNombre(Player jugador) {
-		  JugadorDatos j = getJugadorPorUUID(jugador.getUniqueId().toString());
-		  if(j == null) {
-			  j = new JugadorDatos(jugador.getName(),jugador.getUniqueId().toString(),new ArrayList<KitJugador>());
-			  agregarJugadorDatos(j);
-		  }
-		  
-		  j.setPlayer(jugador.getName());
-	  }
+//	  public void setNombre(Player jugador) {
+//		  JugadorDatos j = getJugadorPorUUID(jugador.getUniqueId().toString());
+//		  if(j == null) {
+//			  j = new JugadorDatos(jugador.getName(),jugador.getUniqueId().toString(),new ArrayList<KitJugador>());
+//			  agregarJugadorDatos(j);
+//		  }
+//		  
+//		  j.setPlayer(jugador.getName());
+//	  }
 }

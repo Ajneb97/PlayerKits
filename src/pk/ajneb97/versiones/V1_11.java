@@ -218,11 +218,11 @@ public class V1_11 {
 			List<String> listaNBT = new ArrayList<String>();
 			for(String t : tags) {
 				if(!t.equals("ench") && !t.equals("HideFlags") && !t.equals("display")
-						&& !t.equals("SkullOwner") && !t.equals("AttributeModifiers") && !t.equals("Unbreakable")
-						&& !t.equals("Enchantments") && !t.equals("Damage") && !t.equals("Potion")
-						&& !t.equals("StoredEnchantments") && !t.equals("CustomPotionEffects")
-						&& !t.equals("pages") && !t.equals("title") && !t.equals("author") && !t.equals("resolved")
-						&& !t.equals("generation")) {
+						&& !t.equals("SkullOwner") && !t.equals("AttributeModifiers") 
+						&& !t.equals("Enchantments") && !t.equals("Damage") && !t.equals("CustomModelData") && !t.equals("Potion")
+						&& !t.equals("StoredEnchantments") && !t.equals("CustomPotionColor") && !t.equals("CustomPotionEffects") && !t.equals("Fireworks")
+						&& !t.equals("Explosion")&& !t.equals("pages") && !t.equals("title") && !t.equals("author") && !t.equals("resolved")
+						&& !t.equals("generation") && !t.equals("BlockEntityTag")) {
 					if(itemTag.hasKeyOfType(t, 1)) {
 						//boolean
 						listaNBT.add(t+";"+itemTag.getBoolean(t)+";boolean");
@@ -255,10 +255,13 @@ public class V1_11 {
 		List<String> listaNBT = config.getStringList(path+".nbt");
 		for(int i=0;i<listaNBT.size();i++) {
 			
-			String[] sep = listaNBT.get(i).split(";");
+			String nbt = listaNBT.get(i);
+			String[] sep = nbt.split(";");
+			String id = sep[0];
+			String type = sep[sep.length-1];
 			if(sep[1].startsWith("{")) {
 				try {
-					net.minecraft.server.v1_11_R1.NBTTagCompound tagNew = net.minecraft.server.v1_11_R1.MojangsonParser.parse(sep[1]);
+					net.minecraft.server.v1_11_R1.NBTTagCompound tagNew = net.minecraft.server.v1_11_R1.MojangsonParser.parse(nbt.replace(id+";", ""));
 					tag.set(sep[0], tagNew);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
@@ -266,16 +269,14 @@ public class V1_11 {
 				}
 
 			}else {
-				if(sep.length == 3) {
-					if(sep[2].equals("boolean")) {
-						tag.setBoolean(sep[0], Boolean.valueOf(sep[1]));
-					}else if(sep[2].equals("double")) {
-						tag.setDouble(sep[0], Double.valueOf(sep[1]));
-					}else if(sep[2].equals("int")) {
-						tag.setInt(sep[0], Integer.valueOf(sep[1]));
-					}
+				if(type.equals("boolean")) {
+					tag.setBoolean(sep[0], Boolean.valueOf(sep[1]));
+				}else if(type.equals("double")) {
+					tag.setDouble(sep[0], Double.valueOf(sep[1]));
+				}else if(type.equals("int")) {
+					tag.setInt(sep[0], Integer.valueOf(sep[1]));
 				}else {
-					tag.setString(sep[0], sep[1]);
+					tag.setString(sep[0], nbt.replace(id+";", ""));
 				}
 			}
 			

@@ -23,8 +23,10 @@ import com.google.common.collect.Multimap;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 
+import net.minecraft.nbt.NBTTagCompound;
 
-public class V1_18 {
+
+public class V1_18_R1 {
 	
 	public ItemStack setSkullSinID(ItemStack item, String textura) {
 		if (textura.isEmpty()) return item;
@@ -90,47 +92,61 @@ public class V1_18 {
 
 	public void guardarSkull(ItemStack item, String path, FileConfiguration config, String nombreJugador) {
 		net.minecraft.world.item.ItemStack cabeza = org.bukkit.craftbukkit.v1_18_R1.inventory.CraftItemStack.asNMSCopy(item);
-		net.minecraft.nbt.NBTTagCompound cabezaTag =  cabeza.s();
-		if(cabeza.r()){
-			if(cabezaTag.e("SkullOwner")){
-				net.minecraft.nbt.NBTTagCompound skullOwner = cabezaTag.p("SkullOwner");
-				if(skullOwner.e("Properties")){
-					net.minecraft.nbt.NBTTagCompound propiedades = skullOwner.p("Properties");
-					if(propiedades.e("textures")){
-						net.minecraft.nbt.NBTTagList texturas = propiedades.c("textures", 10);
-						config.set(path+".skull-texture", texturas.a(0).l("Value"));
+		try {
+			net.minecraft.nbt.NBTTagCompound cabezaTag = (NBTTagCompound) cabeza.getClass().getMethod("s").invoke(cabeza);
+			if((boolean) cabeza.getClass().getMethod("r").invoke(cabeza)){
+				if(cabezaTag.e("SkullOwner")){
+					net.minecraft.nbt.NBTTagCompound skullOwner = cabezaTag.p("SkullOwner");
+					if(skullOwner.e("Properties")){
+						net.minecraft.nbt.NBTTagCompound propiedades = skullOwner.p("Properties");
+						if(propiedades.e("textures")){
+							net.minecraft.nbt.NBTTagList texturas = propiedades.c("textures", 10);
+							config.set(path+".skull-texture", texturas.a(0).l("Value"));
+						}
+						
 					}
-					
 				}
-			}
-		}	
+			}	
+		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
+				| SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		
 	}
 	
 	public void guardarSkullDisplay(ItemStack item, String path, FileConfiguration config) {
 		net.minecraft.world.item.ItemStack cabeza = org.bukkit.craftbukkit.v1_18_R1.inventory.CraftItemStack.asNMSCopy(item);
-		net.minecraft.nbt.NBTTagCompound cabezaTag =  cabeza.s();
-		if(cabeza.r()){
-			if(cabezaTag.e("SkullOwner")){
-				net.minecraft.nbt.NBTTagCompound skullOwner = cabezaTag.p("SkullOwner");
-				String skullmeta = "";
-				if(skullOwner.e("Id")){
-					skullmeta = skullOwner.l("Id");
-					
-				}
-				if(skullOwner.e("Properties")){
-					net.minecraft.nbt.NBTTagCompound propiedades = skullOwner.p("Properties");
-					if(propiedades.e("textures")){
-						net.minecraft.nbt.NBTTagList texturas = propiedades.c("textures", 10);
-						skullmeta = skullmeta+";"+texturas.a(0).l("Value");
+		try {
+			net.minecraft.nbt.NBTTagCompound cabezaTag = (NBTTagCompound) cabeza.getClass().getMethod("s").invoke(cabeza);
+			if((boolean) cabeza.getClass().getMethod("r").invoke(cabeza)){
+				if(cabezaTag.e("SkullOwner")){
+					net.minecraft.nbt.NBTTagCompound skullOwner = cabezaTag.p("SkullOwner");
+					String skullmeta = "";
+					if(skullOwner.e("Id")){
+						skullmeta = skullOwner.l("Id");
+						
 					}
-					
-				}
-				if(skullmeta.contains(";")) {
-					config.set(path+".display_item_skulldata", skullmeta);
+					if(skullOwner.e("Properties")){
+						net.minecraft.nbt.NBTTagCompound propiedades = skullOwner.p("Properties");
+						if(propiedades.e("textures")){
+							net.minecraft.nbt.NBTTagList texturas = propiedades.c("textures", 10);
+							skullmeta = skullmeta+";"+texturas.a(0).l("Value");
+						}
+						
+					}
+					if(skullmeta.contains(";")) {
+						config.set(path+".display_item_skulldata", skullmeta);
+					}
 				}
 			}
-		}	
+		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
+				| SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+			
 		
 	}
 	
@@ -186,75 +202,92 @@ public class V1_18 {
 	
 	public void guardarNBT(ItemStack item, String path, FileConfiguration config) {
 		net.minecraft.world.item.ItemStack itemModificado = org.bukkit.craftbukkit.v1_18_R1.inventory.CraftItemStack.asNMSCopy(item);
-		net.minecraft.nbt.NBTTagCompound itemTag =  itemModificado.s();
-		if(itemModificado.r()){
-			Set<String> tags = itemTag.d();
-			List<String> listaNBT = new ArrayList<String>();
-			for(String t : tags) {
-				if(!t.equals("ench") && !t.equals("HideFlags") && !t.equals("display")
-						&& !t.equals("SkullOwner") && !t.equals("AttributeModifiers") && !t.equals("Unbreakable")
-						&& !t.equals("Enchantments") && !t.equals("Damage") && !t.equals("CustomModelData") && !t.equals("Potion")
-						&& !t.equals("StoredEnchantments") && !t.equals("CustomPotionEffects") && !t.equals("Fireworks")
-						&& !t.equals("Explosion")&& !t.equals("pages") && !t.equals("title") && !t.equals("author") && !t.equals("resolved")
-						&& !t.equals("generation")) {
-					if(itemTag.b(t, 1)) {
-						//boolean
-						listaNBT.add(t+";"+itemTag.q(t)+";boolean");
-					}else if(itemTag.b(t, 3)) {
-						//int
-						listaNBT.add(t+";"+itemTag.h(t)+";int");
-					}else if(itemTag.b(t, 6)) {
-						//double
-						listaNBT.add(t+";"+itemTag.k(t)+";double");
-					}else if(itemTag.b(t, 8)) {
-						//String
-						listaNBT.add(t+";"+itemTag.l(t));
-					}else {
-						//compound
-						listaNBT.add(t+";"+itemTag.c(t));
-					}
-				}	
+		try {
+			net.minecraft.nbt.NBTTagCompound itemTag = (NBTTagCompound) itemModificado.getClass().getMethod("s").invoke(itemModificado);
+			if((boolean) itemModificado.getClass().getMethod("r").invoke(itemModificado)){
+				Set<String> tags = itemTag.d();
+				List<String> listaNBT = new ArrayList<String>();
+				for(String t : tags) {
+					if(!t.equals("ench") && !t.equals("HideFlags") && !t.equals("display")
+							&& !t.equals("SkullOwner") && !t.equals("AttributeModifiers") 
+							&& !t.equals("Enchantments") && !t.equals("Damage") && !t.equals("CustomModelData") && !t.equals("Potion")
+							&& !t.equals("StoredEnchantments") && !t.equals("CustomPotionColor") && !t.equals("CustomPotionEffects") && !t.equals("Fireworks")
+							&& !t.equals("Explosion")&& !t.equals("pages") && !t.equals("title") && !t.equals("author") && !t.equals("resolved")
+							&& !t.equals("generation") && !t.equals("BlockEntityTag")) {
+						if(itemTag.b(t, 1)) {
+							//boolean
+							listaNBT.add(t+";"+itemTag.q(t)+";boolean");
+						}else if(itemTag.b(t, 3)) {
+							//int
+							listaNBT.add(t+";"+itemTag.h(t)+";int");
+						}else if(itemTag.b(t, 6)) {
+							//double
+							listaNBT.add(t+";"+itemTag.k(t)+";double");
+						}else if(itemTag.b(t, 8)) {
+							//String
+							listaNBT.add(t+";"+itemTag.l(t));
+						}else {
+							//compound
+							listaNBT.add(t+";"+itemTag.c(t));
+						}
+					}	
+				}
+				if(!listaNBT.isEmpty()) {
+					config.set(path+".nbt", listaNBT);
+				}
 			}
-			if(!listaNBT.isEmpty()) {
-				config.set(path+".nbt", listaNBT);
-			}
+		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
+				| SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		
 		
 	}
 	
 	public ItemStack setNBT(ItemStack item, String path, FileConfiguration config) {
 		net.minecraft.world.item.ItemStack nuevoItem = org.bukkit.craftbukkit.v1_18_R1.inventory.CraftItemStack.asNMSCopy(item);
-		net.minecraft.nbt.NBTTagCompound tag = nuevoItem.r() ? nuevoItem.s() : new net.minecraft.nbt.NBTTagCompound(); 
-		List<String> listaNBT = config.getStringList(path+".nbt");
-		for(int i=0;i<listaNBT.size();i++) {
-			
-			String[] sep = listaNBT.get(i).split(";");
-			if(sep[1].startsWith("{")) {
-				try {
-					net.minecraft.nbt.NBTTagCompound tagNew = net.minecraft.nbt.MojangsonParser.a(sep[1]);
-					tag.a(sep[0], tagNew);
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
-			}else {
-				if(sep.length == 3) {
-					if(sep[2].equals("boolean")) {
-						tag.a(sep[0], Boolean.valueOf(sep[1]));
-					}else if(sep[2].equals("double")) {
-						tag.a(sep[0], Double.valueOf(sep[1]));
-					}else if(sep[2].equals("int")) {
-						tag.a(sep[0], Integer.valueOf(sep[1]));
+		try {
+			boolean hasTag = (boolean) nuevoItem.getClass().getMethod("r").invoke(nuevoItem);
+			NBTTagCompound getTag = (NBTTagCompound) nuevoItem.getClass().getMethod("s").invoke(nuevoItem);
+			net.minecraft.nbt.NBTTagCompound tag = hasTag ? getTag : new net.minecraft.nbt.NBTTagCompound();
+			List<String> listaNBT = config.getStringList(path+".nbt");
+			for(int i=0;i<listaNBT.size();i++) {
+				
+				String nbt = listaNBT.get(i);
+				String[] sep = nbt.split(";");
+				String id = sep[0];
+				String type = sep[sep.length-1];
+				if(sep[1].startsWith("{")) {
+					try {
+						net.minecraft.nbt.NBTTagCompound tagNew = net.minecraft.nbt.MojangsonParser.a(nbt.replace(id+";", ""));
+						tag.a(sep[0], tagNew);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 					}
+
 				}else {
-					tag.a(sep[0], sep[1]);
+					if(type.equals("boolean")) {
+						tag.a(sep[0], Boolean.valueOf(sep[1]));
+					}else if(type.equals("double")) {
+						tag.a(sep[0], Double.valueOf(sep[1]));
+					}else if(type.equals("int")) {
+						tag.a(sep[0], Integer.valueOf(sep[1]));
+					}else {
+						//String
+						tag.a(sep[0], nbt.replace(id+";", ""));
+					}
 				}
 				
 			}
-			
+			nuevoItem.c(tag);
+		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
+				| SecurityException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
-		nuevoItem.c(tag);
+		
 		return org.bukkit.craftbukkit.v1_18_R1.inventory.CraftItemStack.asBukkitCopy(nuevoItem);
 	}
 }

@@ -42,11 +42,12 @@ import org.bukkit.potion.PotionType;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.chat.ComponentSerializer;
 import net.milkbowl.vault.economy.Economy;
 import pk.ajneb97.InventarioJugador;
 import pk.ajneb97.PlayerKits;
 import pk.ajneb97.model.JugadorDatos;
-import pk.ajneb97.otros.ItemSerializer;
 import pk.ajneb97.otros.MensajesUtils;
 import pk.ajneb97.otros.Utilidades;
 
@@ -105,8 +106,7 @@ public class KitManager {
 		int datavalue = 0;
 		int amount = item.getAmount();
 		String idtext = id+"";
-		if(!Bukkit.getVersion().contains("1.13") && !Bukkit.getVersion().contains("1.14") && !Bukkit.getVersion().contains("1.15")
-				&& !Bukkit.getVersion().contains("1.16") && !Bukkit.getVersion().contains("1.17")&& !Bukkit.getVersion().contains("1.18")){
+		if(Utilidades.isLegacy()){
 			if(id == Material.POTION){
 				datavalue = item.getDurability();
 			}else{
@@ -165,12 +165,21 @@ public class KitManager {
 			BookMeta meta = (BookMeta) item.getItemMeta();
 			String author = meta.getAuthor();
 			String title = meta.getTitle();
-			String generation = "";
-			if(!Bukkit.getVersion().contains("1.8") && !Bukkit.getVersion().contains("1.9") && meta.hasGeneration()) {
-				generation = meta.getGeneration().name();
-				kitConfig.set(path+".book-generation", generation);
+			String generation = null;
+			List<String> pages = new ArrayList<String>();
+			
+			if(!Bukkit.getVersion().contains("1.12") && Utilidades.isLegacy()) {
+				pages = new ArrayList<String>(meta.getPages());
+			}else {
+				if(meta.getGeneration() != null) {
+					generation = meta.getGeneration().name();
+				}
+				for(BaseComponent[] page : meta.spigot().getPages()) {
+					pages.add(ComponentSerializer.toString(page));
+				}
 			}
-			List<String> pages = meta.getPages();
+
+			kitConfig.set(path+".book-generation", generation);
 			kitConfig.set(path+".book-author", author);
 			kitConfig.set(path+".book-title", title);
 			kitConfig.set(path+".book-pages", pages);
@@ -209,8 +218,7 @@ public class KitManager {
 		
 		boolean esBanner = false;
 		boolean esEscudo = false;
-		if(Bukkit.getVersion().contains("1.13") || Bukkit.getVersion().contains("1.14") || Bukkit.getVersion().contains("1.15")
-				|| Bukkit.getVersion().contains("1.16") || Bukkit.getVersion().contains("1.17")|| Bukkit.getVersion().contains("1.18")){
+		if(!Utilidades.isLegacy()){
 			if(id.name().contains("BANNER") && !id.name().contains("PATTERN")){
 				esBanner = true;
 			}else if(id == Material.SHIELD) {
@@ -253,8 +261,7 @@ public class KitManager {
 					patternsPath = patternsPath.replaceFirst(";", "");
 				}
 				kitConfig.set(path+".banner-pattern", patternsPath);
-				if(!Bukkit.getVersion().contains("1.13") && !Bukkit.getVersion().contains("1.14") && !Bukkit.getVersion().contains("1.15")
-						&& !Bukkit.getVersion().contains("1.16") && !Bukkit.getVersion().contains("1.17") && !Bukkit.getVersion().contains("1.18")){
+				if(Utilidades.isLegacy()){
 					kitConfig.set(path+".banner-color", banner.getBaseColor().name());
 				}else {
 					kitConfig.set(path+".banner-color", banner.getType().name());
@@ -264,8 +271,7 @@ public class KitManager {
 		
 		
 		Utilidades u = new Utilidades();
-		if(Bukkit.getVersion().contains("1.13") || Bukkit.getVersion().contains("1.14") || Bukkit.getVersion().contains("1.15")
-				|| Bukkit.getVersion().contains("1.16") || Bukkit.getVersion().contains("1.17")|| Bukkit.getVersion().contains("1.18")){
+		if(!Utilidades.isLegacy()){
 			if(id == Material.getMaterial("PLAYER_HEAD")){
 				u.guardarSkull(item,kitConfig,path,"");				
 			}
@@ -280,14 +286,12 @@ public class KitManager {
 		u.guardarAttributes(item,kitConfig,path);
 		u.guardarNBT(item, kitConfig, path);
 		
-		if(datavalue != 0 && !Bukkit.getVersion().contains("1.13") && !Bukkit.getVersion().contains("1.14") && !Bukkit.getVersion().contains("1.15")
-				&& !Bukkit.getVersion().contains("1.16") && !Bukkit.getVersion().contains("1.17")&& !Bukkit.getVersion().contains("1.18")){
+		if(datavalue != 0 && Utilidades.isLegacy()){
 			idtext = idtext+":"+datavalue;
 		}
 		kitConfig.set(path+".id", idtext+"");
 		kitConfig.set(path+".amount", amount+"");
-		if(Bukkit.getVersion().contains("1.13") || Bukkit.getVersion().contains("1.14") || Bukkit.getVersion().contains("1.15")
-				|| Bukkit.getVersion().contains("1.16") || Bukkit.getVersion().contains("1.17") || Bukkit.getVersion().contains("1.18")) {
+		if(!Utilidades.isLegacy()) {
 			kitConfig.set(path+".durability", item.getDurability()+"");
 		}
 		if(item.hasItemMeta()){
@@ -338,8 +342,7 @@ public class KitManager {
 			}else{
 				kitConfig.set(path+".unbreakable", "false");
 			}
-			if(Bukkit.getVersion().contains("1.14") || Bukkit.getVersion().contains("1.15") || Bukkit.getVersion().contains("1.16")
-					|| Bukkit.getVersion().contains("1.17")|| Bukkit.getVersion().contains("1.18")) {
+			if(Utilidades.isNew()) {
 				if(item.getItemMeta().hasCustomModelData()) {
 					kitConfig.set(path+".custom_model_data", item.getItemMeta().getCustomModelData()+"");
 				}
@@ -388,9 +391,7 @@ public class KitManager {
 		  } 
 		  ItemStack crafteos = Utilidades.getItem(id,pathamountInt,"");
 		  String pathdurability = path+".durability";
-		  if((Bukkit.getVersion().contains("1.13") || Bukkit.getVersion().contains("1.14") || Bukkit.getVersion().contains("1.15")
-				  || Bukkit.getVersion().contains("1.16") || Bukkit.getVersion().contains("1.17")
-				  || Bukkit.getVersion().contains("1.18")) && kitConfig.contains(pathdurability)) {
+		  if(!Utilidades.isLegacy() && kitConfig.contains(pathdurability)) {
 			  crafteos.setDurability(Short.valueOf(kitConfig.getString(pathdurability)));
 		  }
 		  if((crafteos.getType().name().contains("POTION") || crafteos.getType().name().contains("TIPPED_ARROW"))) {
@@ -455,18 +456,30 @@ public class KitManager {
 		  	if(kitConfig.contains(book_properties)) {
 		  		BookMeta meta = (BookMeta) crafteos.getItemMeta();
 		  		
-		  		
 				String author = kitConfig.getString(path+".book-author");
 				String title = kitConfig.getString(path+".book-title");
-				String generation = "";
-				if(!Bukkit.getVersion().contains("1.8") && !Bukkit.getVersion().contains("1.9") && kitConfig.contains(path+".book-generation")) {
+				String generation = null;
+				if(kitConfig.contains(path+".book-generation")) {
 					generation = kitConfig.getString(path+".book-generation");
-					meta.setGeneration(Generation.valueOf(generation));
 				}
+				
 				List<String> pages = kitConfig.getStringList(path+".book-pages");
+				
+				if(!Bukkit.getVersion().contains("1.12") && Utilidades.isLegacy()) {
+					meta.setPages(new ArrayList<String>(pages));
+				}else {
+					ArrayList<BaseComponent[]> pagesBaseComponent = new ArrayList<BaseComponent[]>();
+					for(String page : pages) {
+						pagesBaseComponent.add(ComponentSerializer.parse(page));
+					}
+					meta.spigot().setPages(pagesBaseComponent);
+					if(generation != null && !generation.isEmpty()) {
+						meta.setGeneration(Generation.valueOf(generation));
+					}
+				}
+
 				meta.setAuthor(author);
 				meta.setTitle(title);
-				meta.setPages(pages);
 				crafteos.setItemMeta(meta);
 		  	}
 		  	  String firework_effects = path+".firework-effects";
@@ -502,8 +515,7 @@ public class KitManager {
 		  	  if(kitConfig.contains(path+".banner-pattern")) {
 		  		boolean esBanner = false;
 				boolean esEscudo = false;
-				if(Bukkit.getVersion().contains("1.13") || Bukkit.getVersion().contains("1.14") || Bukkit.getVersion().contains("1.15")
-						|| Bukkit.getVersion().contains("1.16") || Bukkit.getVersion().contains("1.17")|| Bukkit.getVersion().contains("1.18")){
+				if(!Utilidades.isLegacy()){
 					if(crafteos.getType().name().contains("BANNER")){
 						esBanner = true;
 					}else if(crafteos.getType() == Material.SHIELD) {
@@ -544,8 +556,7 @@ public class KitManager {
 				}else if(esEscudo) {
 					BlockStateMeta meta = (BlockStateMeta) crafteos.getItemMeta();
 					Banner banner = (Banner) meta.getBlockState();
-					if(!Bukkit.getVersion().contains("1.13") && !Bukkit.getVersion().contains("1.14") && !Bukkit.getVersion().contains("1.15")
-							&& !Bukkit.getVersion().contains("1.16") && !Bukkit.getVersion().contains("1.17") && !Bukkit.getVersion().contains("1.18")){
+					if(Utilidades.isLegacy()){
 		  		  		String mainColor = kitConfig.getString(path+".banner-color");
 		  		  		banner.setBaseColor(DyeColor.valueOf(mainColor));
 		  		  	}else {
@@ -606,8 +617,7 @@ public class KitManager {
     		  for(int i=0;i<flags.size();i++){
     			  crafteosMeta.addItemFlags(ItemFlag.valueOf(flags.get(i)));
     		  }
-    		  if(Bukkit.getVersion().contains("1.14") || Bukkit.getVersion().contains("1.15") || Bukkit.getVersion().contains("1.16")
-    				  || Bukkit.getVersion().contains("1.17") || Bukkit.getVersion().contains("1.18")) {
+    		  if(Utilidades.isNew()) {
     			  if(kitConfig.contains(path+".custom_model_data")){
     				  int customModelData = Integer.valueOf(kitConfig.getString(path+".custom_model_data"));
     				  crafteosMeta.setCustomModelData(customModelData);

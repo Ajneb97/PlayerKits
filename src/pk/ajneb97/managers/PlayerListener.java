@@ -26,7 +26,8 @@ public class PlayerListener implements Listener{
 		final JugadorManager jManager = plugin.getJugadorManager();
 		
 		if(MySQL.isEnabled(plugin.getConfig())) {
-			MySQL.getJugador(jugador.getName(), jugador.getUniqueId().toString(), plugin, new MySQLJugadorCallback() {
+			MySQL.actualizarNombre(plugin, jugador.getName(), jugador.getUniqueId().toString());
+			MySQL.getJugadorByUUID(jugador.getUniqueId().toString(), plugin, new MySQLJugadorCallback() {
 				@Override
 				public void alTerminar(JugadorDatos j) {
 					jManager.removerJugadorDatos(jugador.getName());
@@ -57,7 +58,7 @@ public class PlayerListener implements Listener{
 		if(kitConfig.contains("Kits")) {
 			for(String key : kitConfig.getConfigurationSection("Kits").getKeys(false)) {
 				if(kitConfig.contains("Kits."+key+".first_join") && kitConfig.getString("Kits."+key+".first_join").equals("true")) {
-					KitManager.claimKit(jugador, key, plugin, false, true, false);
+					KitManager.claimKit(jugador, key, plugin, false, false, false);
 				}
 			}
 		}

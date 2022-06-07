@@ -53,7 +53,7 @@ public class InventarioManager{
 		FileConfiguration config = plugin.getConfig();
 		FileConfiguration configKits = plugin.getKits();
 		
-		String pathInventory = MensajesUtils.getMensajeColor(config.getString("Messages.inventoryName"));
+		String pathInventory = MensajesUtils.getMensajeColor(getInventoryPageName(config, pagina));
 		String pathInventoryM = ChatColor.stripColor(pathInventory);
 		Inventory inv = jugador.getOpenInventory().getTopInventory();
 		int paginasTotales = getPaginasTotales(configKits);
@@ -83,8 +83,7 @@ public class InventarioManager{
 						meta.setLore(lore);
 					}
 					meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES,ItemFlag.HIDE_ENCHANTS);
-					if(Bukkit.getVersion().contains("1.14") || Bukkit.getVersion().contains("1.15") || Bukkit.getVersion().contains("1.16")
-							 || Bukkit.getVersion().contains("1.17")|| Bukkit.getVersion().contains("1.18")) {
+					if(Utilidades.isNew()) {
 		    			  if(config.contains("Config.Inventory."+key+".custom_model_data")){
 		    				  int customModelData = Integer.valueOf(config.getString("Config.Inventory."+key+".custom_model_data"));
 		    				  meta.setCustomModelData(customModelData);
@@ -199,7 +198,7 @@ public class InventarioManager{
 	
 	public static void abrirInventarioMain(FileConfiguration config,PlayerKits plugin,Player jugador,int pagina) {
 		int size = Integer.valueOf(config.getString("Config.inventorySize"));
-		Inventory inv = Bukkit.createInventory(null, size, MensajesUtils.getMensajeColor(config.getString("Messages.inventoryName")));
+		Inventory inv = Bukkit.createInventory(null, size, MensajesUtils.getMensajeColor(getInventoryPageName(config, pagina)));
 		jugador.openInventory(inv);
 		InventarioManager invM = new InventarioManager(plugin);
 		plugin.agregarInventarioJugador(new InventarioJugador(jugador,pagina,invM,"main"));
@@ -259,5 +258,15 @@ public class InventarioManager{
 //			}
 //		}
 		return item;
+	}
+	
+	public static String getInventoryPageName(FileConfiguration config,int page) {
+		String defaultPage = config.getString("Config.inventory_pages_names.1");
+		for(String key : config.getConfigurationSection("Config.inventory_pages_names").getKeys(false)) {
+			if(key.equals(page+"")) {
+				return config.getString("Config.inventory_pages_names."+key);
+			}
+		}
+		return defaultPage;
 	}
 }

@@ -19,6 +19,7 @@ import net.milkbowl.vault.economy.Economy;
 import pk.ajneb97.InventarioJugador;
 import pk.ajneb97.PlayerKits;
 import pk.ajneb97.otros.MensajesUtils;
+import pk.ajneb97.otros.Utilidades;
 
 public class InventarioConfirmacionDinero implements Listener{
 
@@ -32,8 +33,7 @@ public class InventarioConfirmacionDinero implements Listener{
 		FileConfiguration config = plugin.getConfig();
 		Inventory inv = Bukkit.createInventory(null, 9, MensajesUtils.getMensajeColor(config.getString("Messages.moneyInventoryName")));
 		ItemStack item = null;
-		if(Bukkit.getVersion().contains("1.13") || Bukkit.getVersion().contains("1.14") || Bukkit.getVersion().contains("1.15")
-				|| Bukkit.getVersion().contains("1.16") || Bukkit.getVersion().contains("1.17")|| Bukkit.getVersion().contains("1.18")) {
+		if(!Utilidades.isLegacy()) {
 			item = new ItemStack(Material.LIME_STAINED_GLASS_PANE,1);
 		}else {
 			item = new ItemStack(Material.valueOf("STAINED_GLASS_PANE"),1,(short)5);
@@ -44,8 +44,7 @@ public class InventarioConfirmacionDinero implements Listener{
 		inv.setItem(0, item);inv.setItem(1, item);inv.setItem(2, item);inv.setItem(3, item);
 		
 		item = null;
-		if(Bukkit.getVersion().contains("1.13") || Bukkit.getVersion().contains("1.14") || Bukkit.getVersion().contains("1.15")
-				|| Bukkit.getVersion().contains("1.16") || Bukkit.getVersion().contains("1.17")|| Bukkit.getVersion().contains("1.18")) {
+		if(!Utilidades.isLegacy()) {
 			item = new ItemStack(Material.RED_STAINED_GLASS_PANE,1);
 		}else {
 			item = new ItemStack(Material.valueOf("STAINED_GLASS_PANE"),1,(short)14);

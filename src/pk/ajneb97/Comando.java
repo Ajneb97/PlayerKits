@@ -3,14 +3,16 @@ package pk.ajneb97;
 
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.metadata.FixedMetadataValue;
 
 import net.md_5.bungee.api.ChatColor;
 import pk.ajneb97.managers.InventarioEditar;
@@ -24,7 +26,7 @@ import pk.ajneb97.otros.Utilidades;
 
 
 
-public class Comando implements CommandExecutor {
+public class Comando implements CommandExecutor,TabCompleter {
 	
 	private PlayerKits plugin;
 	public Comando(PlayerKits plugin) {
@@ -58,6 +60,19 @@ public class Comando implements CommandExecutor {
 	   final Player jugador = (Player)sender;
 	   
 	   if(args.length > 0) {
+		   if(config.getBoolean("Config.claim_kit_short_command")) {
+			   // /kit <kit>
+			   String kit = getKit(configKits,args[0]);
+			   if(kit != null) {
+				   if(configKits.contains("Kits."+kit+".slot") || jugador.isOp() || jugador.hasPermission("playerkits.admin")) {
+					   KitManager.claimKit(jugador, kit, plugin, true, false, false);
+				   }else {
+					   jugador.sendMessage(MensajesUtils.getMensajeColor(prefix+config.getString("Messages.kitDoesNotExists").replace("%name%", args[0]))); 
+				   }
+				   return true;
+			   }
+		   }
+		   
 		   if(args[0].equalsIgnoreCase("create")) {
 			   if(jugador.isOp() || jugador.hasPermission("playerkits.admin")) {
 				   if(args.length >= 2) {	
@@ -109,7 +124,7 @@ public class Comando implements CommandExecutor {
 				   jugador.sendMessage(MensajesUtils.getMensajeColor(prefix+config.getString("Messages.noPermissions"))); 
 			   }
 		   }
-		   else if(args[0].equalsIgnoreCase("claim")) {
+		   else if(args[0].equalsIgnoreCase("claim") && !config.getBoolean("Config.claim_kit_short_command")) {
 			   if(args.length >= 2) {
 				   String kit = getKit(configKits,args[1]);
 				   if(kit != null) {
@@ -327,5 +342,89 @@ public class Comando implements CommandExecutor {
 			}
 		}
 		return null;
+	}
+	
+	@Override
+	public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
+		List<String> completions = new ArrayList<String>();
+		FileConfiguration config = plugin.getConfig();
+		FileConfiguration kits = plugin.getKits();
+		
+		if(args.length == 1) {
+			//Mostrar todos los comandos
+			List<String> commands = new ArrayList<String>();
+			commands.add("preview");
+			if(config.getBoolean("Config.claim_kit_short_command")) {
+				String argKit = args[0];
+				for(String key : kits.getConfigurationSection("Kits").getKeys(false)) {
+					if(kits.contains("Kits."+key+".slot") || sender.isOp() || sender.hasPermission("playerkits.admin")) {
+						if(argKit.toLowerCase().isEmpty() || key.toLowerCase().startsWith(argKit.toLowerCase())) {
+							completions.add(key);
+						}
+					}
+				}
+			}else {
+				commands.add("claim");
+			}
+			
+			for(String c : commands) {
+				if(args[0].isEmpty() || c.startsWith(args[0].toLowerCase())) {
+					completions.add(c);
+				}
+			}
+		}else {
+			if((args[0].equalsIgnoreCase("claim") || args[0].equalsIgnoreCase("preview")) && args.length == 2) {
+				String argKit = args[1];
+				for(String key : kits.getConfigurationSection("Kits").getKeys(false)) {
+					if(argKit.toLowerCase().isEmpty() || key.toLowerCase().startsWith(argKit.toLowerCase())) {
+						if(kits.contains("Kits."+key+".slot") || sender.isOp() || sender.hasPermission("playerkits.admin")) {
+							completions.add(key);
+						}
+					}
+				}
+			}
+		}
+		
+		
+		if(sender.isOp() || sender.hasPermission("playerkits.admin") || sender.hasPermission("playerkits.list")) {
+			if(args.length == 1) {
+				String c = "list";
+				if(args[0].isEmpty() || c.startsWith(args[0].toLowerCase())) {
+					completions.add(c);
+				}
+			}
+		}
+		if(sender.isOp() || sender.hasPermission("playerkits.admin")) {
+			if(args.length == 1) {
+				//Mostrar todos los comandos
+				List<String> commands = new ArrayList<String>();
+				commands.add("open");commands.add("create");commands.add("delete");
+				commands.add("edit");commands.add("give");
+				commands.add("reset");commands.add("reload");
+				for(String c : commands) {
+					if(args[0].isEmpty() || c.startsWith(args[0].toLowerCase())) {
+						completions.add(c);
+					}
+				}
+			}else {
+				if((args[0].equalsIgnoreCase("delete") || args[0].equalsIgnoreCase("edit")
+						 || args[0].equalsIgnoreCase("give") || args[0].equalsIgnoreCase("reset"))
+						&& args.length == 2) {
+					String argKit = args[1];
+					for(String key : kits.getConfigurationSection("Kits").getKeys(false)) {
+						if(argKit.toLowerCase().isEmpty() || key.toLowerCase().startsWith(argKit.toLowerCase())) {
+							completions.add(key);
+						}
+					}
+				}
+			}	
+		}
+		
+		if(completions.isEmpty()) {
+			return null;
+		}
+		
+		
+		return completions;
 	}
 }

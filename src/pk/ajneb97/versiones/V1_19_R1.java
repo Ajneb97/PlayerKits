@@ -12,6 +12,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
@@ -22,8 +23,8 @@ import com.google.common.collect.Multimap;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 
-public class V1_16_R2 {
 
+public class V1_19_R1 {
 	
 	public ItemStack setSkullSinID(ItemStack item, String textura) {
 		if (textura.isEmpty()) return item;
@@ -44,25 +45,22 @@ public class V1_16_R2 {
         item.setItemMeta(skullMeta);
         return item;
 	}
-	
+
 	public ItemStack setUnbreakable(ItemStack item){
-		net.minecraft.server.v1_16_R2.ItemStack stack = org.bukkit.craftbukkit.v1_16_R2.inventory.CraftItemStack.asNMSCopy(item);
-		net.minecraft.server.v1_16_R2.NBTTagCompound tag = stack.hasTag() ? stack.getTag() : new net.minecraft.server.v1_16_R2.NBTTagCompound(); //Create the NMS Stack's NBT (item data)		
-		tag.setByte("Unbreakable", (byte)1); //Set unbreakable value to true
-		stack.setTag(tag); //Apply the tag to the item
-		item = org.bukkit.craftbukkit.v1_16_R2.inventory.CraftItemStack.asBukkitCopy(stack); //Get the bukkit version of the stack
+		if(item.hasItemMeta()) {
+			ItemMeta meta = item.getItemMeta();
+			meta.setUnbreakable(true);
+			item.setItemMeta(meta);
+		}
 		return item;
 	}
 	
 	public boolean getUnbreakable(ItemStack item){
-		net.minecraft.server.v1_16_R2.ItemStack stack = org.bukkit.craftbukkit.v1_16_R2.inventory.CraftItemStack.asNMSCopy(item);
-		net.minecraft.server.v1_16_R2.NBTTagCompound tag = new net.minecraft.server.v1_16_R2.NBTTagCompound(); //Create the NMS Stack's NBT (item data)
-		tag = stack.getTag();
-		if(tag.getBoolean("Unbreakable") == true){
-			return true;
-		}else{
-			return false;
+		if(item.hasItemMeta()) {
+			ItemMeta meta = item.getItemMeta();
+			return meta.isUnbreakable();
 		}
+		return false;
 	}
 
 	public ItemStack setSkull(ItemStack crafteos, String path, FileConfiguration config) {
@@ -90,60 +88,50 @@ public class V1_16_R2 {
 		return crafteos;
 	}
 
-	public void guardarSkull(ItemStack item, String path, FileConfiguration config,String nombreJugador) {
-		net.minecraft.server.v1_16_R2.ItemStack cabeza = org.bukkit.craftbukkit.v1_16_R2.inventory.CraftItemStack.asNMSCopy(item);
-		net.minecraft.server.v1_16_R2.NBTTagCompound cabezaTag = cabeza.getTag();
-		if(cabeza.hasTag()){
-			if(cabezaTag.hasKey("SkullOwner")){
-				net.minecraft.server.v1_16_R2.NBTTagCompound skullOwner = cabezaTag.getCompound("SkullOwner");
-				if(skullOwner.hasKey("Properties")){
-					net.minecraft.server.v1_16_R2.NBTTagCompound propiedades = skullOwner.getCompound("Properties");
-					if(propiedades.hasKey("textures")){
-						net.minecraft.server.v1_16_R2.NBTTagList texturas = propiedades.getList("textures", 10);
-						config.set(path+".skull-texture", texturas.getCompound(0).getString("Value"));
+	public void guardarSkull(ItemStack item, String path, FileConfiguration config, String nombreJugador) {
+		net.minecraft.world.item.ItemStack cabeza = org.bukkit.craftbukkit.v1_19_R1.inventory.CraftItemStack.asNMSCopy(item);
+		net.minecraft.nbt.NBTTagCompound cabezaTag =  cabeza.u();
+		if(cabeza.t()){
+			if(cabezaTag.e("SkullOwner")){
+				net.minecraft.nbt.NBTTagCompound skullOwner = cabezaTag.p("SkullOwner");
+				if(skullOwner.e("Properties")){
+					net.minecraft.nbt.NBTTagCompound propiedades = skullOwner.p("Properties");
+					if(propiedades.e("textures")){
+						net.minecraft.nbt.NBTTagList texturas = propiedades.c("textures", 10);
+						config.set(path+".skull-texture", texturas.a(0).l("Value"));
 					}
 					
 				}
-				if(skullOwner.hasKey("Name")){
-					if(skullOwner.getString("Name").equals("%player%")){
-						config.set(path+".skull-owner", nombreJugador);
-					}else{
-						config.set(path+".skull-owner", skullOwner.getString("Name"));
-					}
-					
-				}
-				if(skullOwner.hasKey("Id")){
-					config.set(path+".skull-id", skullOwner.getString("Id"));
-				}
-				
 			}
 		}	
 		
 	}
 	
 	public void guardarSkullDisplay(ItemStack item, String path, FileConfiguration config) {
-		net.minecraft.server.v1_16_R2.ItemStack cabeza = org.bukkit.craftbukkit.v1_16_R2.inventory.CraftItemStack.asNMSCopy(item);
-		net.minecraft.server.v1_16_R2.NBTTagCompound cabezaTag = cabeza.getTag();
-		if(cabeza.hasTag()){
-			if(cabezaTag.hasKey("SkullOwner")){
-				net.minecraft.server.v1_16_R2.NBTTagCompound skullOwner = cabezaTag.getCompound("SkullOwner");
+		net.minecraft.world.item.ItemStack cabeza = org.bukkit.craftbukkit.v1_19_R1.inventory.CraftItemStack.asNMSCopy(item);
+		net.minecraft.nbt.NBTTagCompound cabezaTag =  cabeza.u();
+		if(cabeza.t()){
+			if(cabezaTag.e("SkullOwner")){
+				net.minecraft.nbt.NBTTagCompound skullOwner = cabezaTag.p("SkullOwner");
 				String skullmeta = "";
-				if(skullOwner.hasKey("Id")){
-					skullmeta = skullOwner.getString("Id");
+				if(skullOwner.e("Id")){
+					skullmeta = skullOwner.l("Id");
 					
 				}
-				if(skullOwner.hasKey("Properties")){
-					net.minecraft.server.v1_16_R2.NBTTagCompound propiedades = skullOwner.getCompound("Properties");
-					if(propiedades.hasKey("textures")){
-						net.minecraft.server.v1_16_R2.NBTTagList texturas = propiedades.getList("textures", 10);
-						skullmeta = skullmeta+";"+texturas.getCompound(0).getString("Value");
+				if(skullOwner.e("Properties")){
+					net.minecraft.nbt.NBTTagCompound propiedades = skullOwner.p("Properties");
+					if(propiedades.e("textures")){
+						net.minecraft.nbt.NBTTagList texturas = propiedades.c("textures", 10);
+						skullmeta = skullmeta+";"+texturas.a(0).l("Value");
 					}
+					
 				}
 				if(skullmeta.contains(";")) {
 					config.set(path+".display_item_skulldata", skullmeta);
 				}
 			}
-		}		
+		}	
+		
 	}
 	
 	public ItemStack setAttributes(ItemStack item, String path, FileConfiguration config){
@@ -197,10 +185,10 @@ public class V1_16_R2 {
 	}
 	
 	public void guardarNBT(ItemStack item, String path, FileConfiguration config) {
-		net.minecraft.server.v1_16_R2.ItemStack itemModificado = org.bukkit.craftbukkit.v1_16_R2.inventory.CraftItemStack.asNMSCopy(item);
-		net.minecraft.server.v1_16_R2.NBTTagCompound itemTag =  itemModificado.getTag();
-		if(itemModificado.hasTag()){
-			Set<String> tags = itemTag.getKeys();
+		net.minecraft.world.item.ItemStack itemModificado = org.bukkit.craftbukkit.v1_19_R1.inventory.CraftItemStack.asNMSCopy(item);
+		net.minecraft.nbt.NBTTagCompound itemTag =  itemModificado.u();
+		if(itemModificado.t()){
+			Set<String> tags = itemTag.d();
 			List<String> listaNBT = new ArrayList<String>();
 			for(String t : tags) {
 				if(!t.equals("ench") && !t.equals("HideFlags") && !t.equals("display")
@@ -209,23 +197,22 @@ public class V1_16_R2 {
 						&& !t.equals("StoredEnchantments") && !t.equals("CustomPotionColor") && !t.equals("CustomPotionEffects") && !t.equals("Fireworks")
 						&& !t.equals("Explosion")&& !t.equals("pages") && !t.equals("title") && !t.equals("author") && !t.equals("resolved")
 						&& !t.equals("generation") && !t.equals("BlockEntityTag")) {
-					if(itemTag.hasKeyOfType(t, 1)) {
+					if(itemTag.b(t, 1)) {
 						//boolean
-						listaNBT.add(t+";"+itemTag.getBoolean(t)+";boolean");
-					}else if(itemTag.hasKeyOfType(t, 3)) {
+						listaNBT.add(t+";"+itemTag.q(t)+";boolean");
+					}else if(itemTag.b(t, 3)) {
 						//int
-						listaNBT.add(t+";"+itemTag.getInt(t)+";int");
-					}else if(itemTag.hasKeyOfType(t, 6)) {
+						listaNBT.add(t+";"+itemTag.h(t)+";int");
+					}else if(itemTag.b(t, 6)) {
 						//double
-						listaNBT.add(t+";"+itemTag.getDouble(t)+";double");
-					}else if(itemTag.hasKeyOfType(t, 8)) {
+						listaNBT.add(t+";"+itemTag.k(t)+";double");
+					}else if(itemTag.b(t, 8)) {
 						//String
-						listaNBT.add(t+";"+itemTag.getString(t));
+						listaNBT.add(t+";"+itemTag.l(t));
 					}else {
 						//compound
-						listaNBT.add(t+";"+itemTag.get(t));
+						listaNBT.add(t+";"+itemTag.c(t));
 					}
-					
 				}	
 			}
 			if(!listaNBT.isEmpty()) {
@@ -236,8 +223,8 @@ public class V1_16_R2 {
 	}
 	
 	public ItemStack setNBT(ItemStack item, String path, FileConfiguration config) {
-		net.minecraft.server.v1_16_R2.ItemStack nuevoItem = org.bukkit.craftbukkit.v1_16_R2.inventory.CraftItemStack.asNMSCopy(item);
-		net.minecraft.server.v1_16_R2.NBTTagCompound tag = nuevoItem.hasTag() ? nuevoItem.getTag() : new net.minecraft.server.v1_16_R2.NBTTagCompound(); 
+		net.minecraft.world.item.ItemStack nuevoItem = org.bukkit.craftbukkit.v1_19_R1.inventory.CraftItemStack.asNMSCopy(item);
+		net.minecraft.nbt.NBTTagCompound tag = nuevoItem.t() ? nuevoItem.u() : new net.minecraft.nbt.NBTTagCompound(); 
 		List<String> listaNBT = config.getStringList(path+".nbt");
 		for(int i=0;i<listaNBT.size();i++) {
 			
@@ -247,8 +234,8 @@ public class V1_16_R2 {
 			String type = sep[sep.length-1];
 			if(sep[1].startsWith("{")) {
 				try {
-					net.minecraft.server.v1_16_R2.NBTTagCompound tagNew = net.minecraft.server.v1_16_R2.MojangsonParser.parse(nbt.replace(id+";", ""));
-					tag.set(sep[0], tagNew);
+					net.minecraft.nbt.NBTTagCompound tagNew = net.minecraft.nbt.MojangsonParser.a(nbt.replace(id+";", ""));
+					tag.a(sep[0], tagNew);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -256,18 +243,19 @@ public class V1_16_R2 {
 
 			}else {
 				if(type.equals("boolean")) {
-					tag.setBoolean(sep[0], Boolean.valueOf(sep[1]));
+					tag.a(sep[0], Boolean.valueOf(sep[1]));
 				}else if(type.equals("double")) {
-					tag.setDouble(sep[0], Double.valueOf(sep[1]));
+					tag.a(sep[0], Double.valueOf(sep[1]));
 				}else if(type.equals("int")) {
-					tag.setInt(sep[0], Integer.valueOf(sep[1]));
+					tag.a(sep[0], Integer.valueOf(sep[1]));
 				}else {
-					tag.setString(sep[0], nbt.replace(id+";", ""));
+					//String
+					tag.a(sep[0], nbt.replace(id+";", ""));
 				}
 			}
 			
 		}
-		nuevoItem.setTag(tag);
-		return org.bukkit.craftbukkit.v1_16_R2.inventory.CraftItemStack.asBukkitCopy(nuevoItem);
+		nuevoItem.c(tag);
+		return org.bukkit.craftbukkit.v1_19_R1.inventory.CraftItemStack.asBukkitCopy(nuevoItem);
 	}
 }

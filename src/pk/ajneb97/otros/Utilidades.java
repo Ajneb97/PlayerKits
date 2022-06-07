@@ -26,7 +26,9 @@ import pk.ajneb97.versiones.V1_16;
 import pk.ajneb97.versiones.V1_16_R2;
 import pk.ajneb97.versiones.V1_16_R3;
 import pk.ajneb97.versiones.V1_17;
-import pk.ajneb97.versiones.V1_18;
+import pk.ajneb97.versiones.V1_18_R1;
+import pk.ajneb97.versiones.V1_18_R2;
+import pk.ajneb97.versiones.V1_19_R1;
 import pk.ajneb97.versiones.V1_8_R1;
 import pk.ajneb97.versiones.V1_8_R2;
 import pk.ajneb97.versiones.V1_8_R3;
@@ -34,6 +36,26 @@ import pk.ajneb97.versiones.V1_9_R1;
 import pk.ajneb97.versiones.V1_9_R2;
 
 public class Utilidades {
+	
+	public static boolean isLegacy() {
+		if(Bukkit.getVersion().contains("1.13") || Bukkit.getVersion().contains("1.14") ||
+				Bukkit.getVersion().contains("1.15") || Bukkit.getVersion().contains("1.16")
+				|| Bukkit.getVersion().contains("1.17") || Bukkit.getVersion().contains("1.18")
+				|| Bukkit.getVersion().contains("1.19")) {
+			return false;
+		}else {
+			return true;
+		}
+	}
+	
+	public static boolean isNew() {
+		if(Bukkit.getVersion().contains("1.16") || Bukkit.getVersion().contains("1.17") || Bukkit.getVersion().contains("1.18")
+				|| Bukkit.getVersion().contains("1.19")) {
+			return true;
+		}else {
+			return false;
+		}
+	}
 	
 	public static String getCooldown(String kit,Player jugador,FileConfiguration kitConfig,FileConfiguration config,JugadorManager jManager){
 		//1000millis claimea un kit de 5 segundos
@@ -175,70 +197,76 @@ public class Utilidades {
 	
 	public static void guardarSkullDisplay(ItemStack item, FileConfiguration config, String path) {
 		String packageName = Bukkit.getServer().getClass().getPackage().getName();
-		if(packageName.contains("1_18_R1")){
-			V1_18 u = new V1_18();
+		if(packageName.contains("1_19_R1")){
+			V1_19_R1 u = new V1_19_R1();
 			u.guardarSkullDisplay(item,path,config);			
-		}
+		}else if(packageName.contains("1_18_R2")){
+			V1_18_R2 u = new V1_18_R2();
+			u.guardarSkullDisplay(item,path,config);			
+		}else if(packageName.contains("1_18_R1")){
+			V1_18_R1 u = new V1_18_R1();
+			u.guardarSkullDisplay(item,path,config);			
+		}else 
 		if(packageName.contains("1_17_R1")){
 			V1_17 u = new V1_17();
 			u.guardarSkullDisplay(item,path,config);			
-		}
+		}else 
 		if(packageName.contains("1_16_R3")){
 			V1_16_R3 u = new V1_16_R3();
 			u.guardarSkullDisplay(item,path,config);			
-		}
+		}else 
 		if(packageName.contains("1_16_R2")){
 			V1_16_R2 u = new V1_16_R2();
 			u.guardarSkullDisplay(item,path,config);			
-		}
+		}else 
 		if(packageName.contains("1_16_R1")){
 			V1_16 u = new V1_16();
 			u.guardarSkullDisplay(item,path,config);			
-		}
+		}else 
 		if(packageName.contains("1_15_R1")){
 			V1_15 u = new V1_15();
 			u.guardarSkullDisplay(item,path,config);			
-		}
+		}else 
 		if(packageName.contains("1_14_R1")){
 			V1_14 u = new V1_14();
 			u.guardarSkullDisplay(item,path,config);			
-		}
+		}else 
 		if(packageName.contains("1_13_R2")){
 			V1_13_R2 u = new V1_13_R2();
 			u.guardarSkullDisplay(item,path,config);			
-		}
+		}else 
 		if(packageName.contains("1_13_R1")){
 			V1_13 u = new V1_13();
 			u.guardarSkullDisplay(item,path,config);			
-		}
+		}else 
 		if(packageName.contains("1_12_R1")){
 			V1_12 u = new V1_12();
 			u.guardarSkullDisplay(item,path,config);			
-		}
+		}else 
 		if(packageName.contains("1_11_R1")){
 			V1_11 u = new V1_11();
 			u.guardarSkullDisplay(item,path,config);	
-		}
+		}else 
 		if(packageName.contains("1_10_R1")){
 			V1_10 u = new V1_10();
 			u.guardarSkullDisplay(item,path,config);	
-		}
+		}else 
 		if(packageName.contains("1_9_R2")){
 			V1_9_R2 u = new V1_9_R2();
 			u.guardarSkullDisplay(item,path,config);	
-		}
+		}else 
 		if(packageName.contains("1_9_R1")){
 			V1_9_R1 u = new V1_9_R1();
 			u.guardarSkullDisplay(item,path,config);	
-		}
+		}else 
 		if(packageName.contains("1_8_R3")){
 			V1_8_R3 u = new V1_8_R3();
 			u.guardarSkullDisplay(item,path,config);	
-		}
+		}else 
 		if(packageName.contains("1_8_R2")){
 			V1_8_R2 u = new V1_8_R2();
 			u.guardarSkullDisplay(item,path,config);		
-		}
+		}else 
 		if(packageName.contains("1_8_R1")){
 			V1_8_R1 u = new V1_8_R1();
 			u.guardarSkullDisplay(item,path,config);	
@@ -247,70 +275,78 @@ public class Utilidades {
 
 	public static void guardarSkull(ItemStack item, FileConfiguration config, String path, String nombreJugador) {
 		String packageName = Bukkit.getServer().getClass().getPackage().getName();
-		if(packageName.contains("1_18_R1")){
-			V1_18 u = new V1_18();
+		if(packageName.contains("1_19_R1")){
+			V1_19_R1 u = new V1_19_R1();
+			u.guardarSkull(item,path,config,nombreJugador);		
+		}else 
+		if(packageName.contains("1_18_R2")){
+			V1_18_R2 u = new V1_18_R2();
 			u.guardarSkull(item,path,config,nombreJugador);			
-		}
+		}else
+		if(packageName.contains("1_18_R1")){
+			V1_18_R1 u = new V1_18_R1();
+			u.guardarSkull(item,path,config,nombreJugador);			
+		}else
 		if(packageName.contains("1_17_R1")){
 			V1_17 u = new V1_17();
 			u.guardarSkull(item,path,config,nombreJugador);			
-		}
+		}else
 		if(packageName.contains("1_16_R3")){
 			V1_16_R3 u = new V1_16_R3();
 			u.guardarSkull(item,path,config,nombreJugador);			
-		}
+		}else
 		if(packageName.contains("1_16_R2")){
 			V1_16_R2 u = new V1_16_R2();
 			u.guardarSkull(item,path,config,nombreJugador);			
-		}
+		}else
 		if(packageName.contains("1_16_R1")){
 			V1_16 u = new V1_16();
 			u.guardarSkull(item,path,config,nombreJugador);			
-		}
+		}else
 		if(packageName.contains("1_15_R1")){
 			V1_15 u = new V1_15();
 			u.guardarSkull(item,path,config,nombreJugador);			
-		}
+		}else
 		if(packageName.contains("1_14_R1")){
 			V1_14 u = new V1_14();
 			u.guardarSkull(item,path,config,nombreJugador);			
-		}
+		}else
 		if(packageName.contains("1_13_R2")){
 			V1_13_R2 u = new V1_13_R2();
 			u.guardarSkull(item,path,config,nombreJugador);			
-		}
+		}else
 		if(packageName.contains("1_13_R1")){
 			V1_13 u = new V1_13();
 			u.guardarSkull(item,path,config,nombreJugador);			
-		}
+		}else
 		if(packageName.contains("1_12_R1")){
 			V1_12 u = new V1_12();
 			u.guardarSkull(item,path,config,nombreJugador);			
-		}
+		}else
 		if(packageName.contains("1_11_R1")){
 			V1_11 u = new V1_11();
 			u.guardarSkull(item,path,config,nombreJugador);	
-		}
+		}else
 		if(packageName.contains("1_10_R1")){
 			V1_10 u = new V1_10();
 			u.guardarSkull(item,path,config,nombreJugador);	
-		}
+		}else
 		if(packageName.contains("1_9_R2")){
 			V1_9_R2 u = new V1_9_R2();
 			u.guardarSkull(item,path,config,nombreJugador);	
-		}
+		}else
 		if(packageName.contains("1_9_R1")){
 			V1_9_R1 u = new V1_9_R1();
 			u.guardarSkull(item,path,config,nombreJugador);	
-		}
+		}else
 		if(packageName.contains("1_8_R3")){
 			V1_8_R3 u = new V1_8_R3();
 			u.guardarSkull(item,path,config,nombreJugador);	
-		}
+		}else
 		if(packageName.contains("1_8_R2")){
 			V1_8_R2 u = new V1_8_R2();
 			u.guardarSkull(item,path,config,nombreJugador);	
-		}
+		}else
 		if(packageName.contains("1_8_R1")){
 			V1_8_R1 u = new V1_8_R1();
 			u.guardarSkull(item,path,config,nombreJugador);	
@@ -319,70 +355,78 @@ public class Utilidades {
 
 	public static void guardarAttributes(ItemStack item, FileConfiguration config, String path) {
 		String packageName = Bukkit.getServer().getClass().getPackage().getName();
-		if(packageName.contains("1_18_R1")){
-			V1_18 u = new V1_18();
+		if(packageName.contains("1_19_R1")){
+			V1_19_R1 u = new V1_19_R1();
 			u.guardarAttributes(item,path,config);			
-		}
+		}else
+		if(packageName.contains("1_18_R2")){
+			V1_18_R2 u = new V1_18_R2();
+			u.guardarAttributes(item,path,config);			
+		}else
+		if(packageName.contains("1_18_R1")){
+			V1_18_R1 u = new V1_18_R1();
+			u.guardarAttributes(item,path,config);			
+		}else
 		if(packageName.contains("1_17_R1")){
 			V1_17 u = new V1_17();
 			u.guardarAttributes(item,path,config);			
-		}
+		}else
 		if(packageName.contains("1_16_R3")){
 			V1_16_R3 u = new V1_16_R3();
 			u.guardarAttributes(item,path,config);			
-		}
+		}else
 		if(packageName.contains("1_16_R2")){
 			V1_16_R2 u = new V1_16_R2();
 			u.guardarAttributes(item,path,config);			
-		}
+		}else
 		if(packageName.contains("1_16_R1")){
 			V1_16 u = new V1_16();
 			u.guardarAttributes(item,path,config);			
-		}
+		}else
 		if(packageName.contains("1_15_R1")){
 			V1_15 u = new V1_15();
 			u.guardarAttributes(item,path,config);			
-		}
+		}else
 		if(packageName.contains("1_14_R1")){
 			V1_14 u = new V1_14();
 			u.guardarAttributes(item,path,config);			
-		}
+		}else
 		if(packageName.contains("1_13_R2")){
 			V1_13_R2 u = new V1_13_R2();
 			u.guardarAttributes(item,path,config);			
-		}
+		}else
 		if(packageName.contains("1_13_R1")){
 			V1_13 u = new V1_13();
 			u.guardarAttributes(item,path,config);			
-		}
+		}else
 		if(packageName.contains("1_12_R1")){
 			V1_12 u = new V1_12();
 			u.guardarAttributes(item,path,config);			
-		}
+		}else
 		if(packageName.contains("1_11_R1")){
 			V1_11 u = new V1_11();
 			u.guardarAttributes(item,path,config);	
-		}
+		}else
 		if(packageName.contains("1_10_R1")){
 			V1_10 u = new V1_10();
 			u.guardarAttributes(item,path,config);		
-		}
+		}else
 		if(packageName.contains("1_9_R2")){
 			V1_9_R2 u = new V1_9_R2();
 			u.guardarAttributes(item,path,config);	
-		}
+		}else
 		if(packageName.contains("1_9_R1")){
 			V1_9_R1 u = new V1_9_R1();
 			u.guardarAttributes(item,path,config);	
-		}
+		}else
 		if(packageName.contains("1_8_R3")){
 			V1_8_R3 u = new V1_8_R3();
 			u.guardarAttributes(item,path,config);	
-		}
+		}else
 		if(packageName.contains("1_8_R2")){
 			V1_8_R2 u = new V1_8_R2();
 			u.guardarAttributes(item,path,config);		
-		}
+		}else
 		if(packageName.contains("1_8_R1")){
 			V1_8_R1 u = new V1_8_R1();
 			u.guardarAttributes(item,path,config);		
@@ -392,70 +436,78 @@ public class Utilidades {
 	
 	public static void guardarNBT(ItemStack item, FileConfiguration config, String path) {
 		String packageName = Bukkit.getServer().getClass().getPackage().getName();
-		if(packageName.contains("1_18_R1")){
-			V1_18 u = new V1_18();
+		if(packageName.contains("1_19_R1")){
+			V1_19_R1 u = new V1_19_R1();
 			u.guardarNBT(item,path,config);			
-		}
+		}else
+		if(packageName.contains("1_18_R2")){
+			V1_18_R2 u = new V1_18_R2();
+			u.guardarNBT(item,path,config);			
+		}else
+		if(packageName.contains("1_18_R1")){
+			V1_18_R1 u = new V1_18_R1();
+			u.guardarNBT(item,path,config);			
+		}else
 		if(packageName.contains("1_17_R1")){
 			V1_17 u = new V1_17();
 			u.guardarNBT(item,path,config);			
-		}
+		}else
 		if(packageName.contains("1_16_R3")){
 			V1_16_R3 u = new V1_16_R3();
 			u.guardarNBT(item,path,config);			
-		}
+		}else
 		if(packageName.contains("1_16_R2")){
 			V1_16_R2 u = new V1_16_R2();
 			u.guardarNBT(item,path,config);			
-		}
+		}else
 		if(packageName.contains("1_16_R1")){
 			V1_16 u = new V1_16();
 			u.guardarNBT(item,path,config);			
-		}
+		}else
 		if(packageName.contains("1_15_R1")){
 			V1_15 u = new V1_15();
 			u.guardarNBT(item,path,config);			
-		}
+		}else
 		if(packageName.contains("1_14_R1")){
 			V1_14 u = new V1_14();
 			u.guardarNBT(item,path,config);			
-		}
+		}else
 		if(packageName.contains("1_13_R2")){
 			V1_13_R2 u = new V1_13_R2();
 			u.guardarNBT(item,path,config);				
-		}
+		}else
 		if(packageName.contains("1_13_R1")){
 			V1_13 u = new V1_13();
 			u.guardarNBT(item,path,config);			
-		}
+		}else
 		if(packageName.contains("1_12_R1")){
 			V1_12 u = new V1_12();
 			u.guardarNBT(item,path,config);			
-		}
+		}else
 		if(packageName.contains("1_11_R1")){
 			V1_11 u = new V1_11();
 			u.guardarNBT(item,path,config);			
-		}
+		}else
 		if(packageName.contains("1_10_R1")){
 			V1_10 u = new V1_10();
 			u.guardarNBT(item,path,config);				
-		}
+		}else
 		if(packageName.contains("1_9_R2")){
 			V1_9_R2 u = new V1_9_R2();
 			u.guardarNBT(item,path,config);			
-		}
+		}else
 		if(packageName.contains("1_9_R1")){
 			V1_9_R1 u = new V1_9_R1();
 			u.guardarNBT(item,path,config);			
-		}
+		}else
 		if(packageName.contains("1_8_R3")){
 			V1_8_R3 u = new V1_8_R3();
 			u.guardarNBT(item,path,config);		
-		}
+		}else
 		if(packageName.contains("1_8_R2")){
 			V1_8_R2 u = new V1_8_R2();
 			u.guardarNBT(item,path,config);			
-		}
+		}else
 		if(packageName.contains("1_8_R1")){
 			V1_8_R1 u = new V1_8_R1();
 			u.guardarNBT(item,path,config);			
@@ -465,51 +517,61 @@ public class Utilidades {
 	
 	public static  ItemStack setUnbreakable(ItemStack item){
 		String packageName = Bukkit.getServer().getClass().getPackage().getName();
-		if(packageName.contains("1_18_R1")){
-			V1_18 u = new V1_18();
+		if(packageName.contains("1_19_R1")){
+			V1_19_R1 u = new V1_19_R1();
 			ItemStack stack = u.setUnbreakable(item);			
 			return stack;
-		}
+		}else
+		if(packageName.contains("1_18_R2")){
+			V1_18_R2 u = new V1_18_R2();
+			ItemStack stack = u.setUnbreakable(item);			
+			return stack;
+		}else
+		if(packageName.contains("1_18_R1")){
+			V1_18_R1 u = new V1_18_R1();
+			ItemStack stack = u.setUnbreakable(item);			
+			return stack;
+		}else
 		if(packageName.contains("1_17_R1")){
 			V1_17 u = new V1_17();
 			ItemStack stack = u.setUnbreakable(item);			
 			return stack;
-		}
+		}else
 		if(packageName.contains("1_16_R3")){
 			V1_16_R3 u = new V1_16_R3();
 			ItemStack stack = u.setUnbreakable(item);			
 			return stack;
-		}
+		}else
 		if(packageName.contains("1_16_R2")){
 			V1_16_R2 u = new V1_16_R2();
 			ItemStack stack = u.setUnbreakable(item);			
 			return stack;
-		}
+		}else
 		if(packageName.contains("1_16_R1")){
 			V1_16 u = new V1_16();
 			ItemStack stack = u.setUnbreakable(item);			
 			return stack;
-		}
+		}else
 		if(packageName.contains("1_15_R1")){
 			V1_15 u = new V1_15();
 			ItemStack stack = u.setUnbreakable(item);			
 			return stack;
-		}
+		}else
 		if(packageName.contains("1_14_R1")){
 			V1_14 u = new V1_14();
 			ItemStack stack = u.setUnbreakable(item);			
 			return stack;
-		}
+		}else
 		if(packageName.contains("1_13_R2")){
 			V1_13_R2 u = new V1_13_R2();
 			ItemStack stack = u.setUnbreakable(item);			
 			return stack;
-		}
+		}else
 		if(packageName.contains("1_13_R1")){
 			V1_13 u = new V1_13();
 			ItemStack stack = u.setUnbreakable(item);			
 			return stack;
-		}
+		}else
 		if(packageName.contains("1_12_R1")){
 			V1_12 u = new V1_12();
 			ItemStack stack = u.setUnbreakable(item);			
@@ -557,86 +619,96 @@ public class Utilidades {
 	
 	public static boolean getUnbreakable(ItemStack item){
 		String packageName = Bukkit.getServer().getClass().getPackage().getName();
-		if(packageName.contains("1_18_R1")){
-			V1_18 u = new V1_18();
+		if(packageName.contains("1_19_R1")){
+			V1_19_R1 u = new V1_19_R1();
 			boolean bol = u.getUnbreakable(item);
 			return bol;
-		}
+		}else
+		if(packageName.contains("1_18_R2")){
+			V1_18_R2 u = new V1_18_R2();
+			boolean bol = u.getUnbreakable(item);
+			return bol;
+		}else
+		if(packageName.contains("1_18_R1")){
+			V1_18_R1 u = new V1_18_R1();
+			boolean bol = u.getUnbreakable(item);
+			return bol;
+		}else
 		if(packageName.contains("1_17_R1")){
 			V1_17 u = new V1_17();
 			boolean bol = u.getUnbreakable(item);
 			return bol;
-		}
+		}else
 		if(packageName.contains("1_16_R3")){
 			V1_16_R3 u = new V1_16_R3();
 			boolean bol = u.getUnbreakable(item);
 			return bol;
-		}
+		}else
 		if(packageName.contains("1_16_R2")){
 			V1_16_R2 u = new V1_16_R2();
 			boolean bol = u.getUnbreakable(item);
 			return bol;
-		}
+		}else
 		if(packageName.contains("1_16_R1")){
 			V1_16 u = new V1_16();
 			boolean bol = u.getUnbreakable(item);
 			return bol;
-		}
+		}else
 		if(packageName.contains("1_15_R1")){
 			V1_15 u = new V1_15();
 			boolean bol = u.getUnbreakable(item);
 			return bol;
-		}
+		}else
 		if(packageName.contains("1_14_R1")){
 			V1_14 u = new V1_14();
 			boolean bol = u.getUnbreakable(item);
 			return bol;
-		}
+		}else
 		if(packageName.contains("1_13_R2")){
 			V1_13_R2 u = new V1_13_R2();
 			boolean bol = u.getUnbreakable(item);
 			return bol;
-		}
+		}else
 		if(packageName.contains("1_13_R1")){
 			V1_13 u = new V1_13();
 			boolean bol = u.getUnbreakable(item);
 			return bol;
-		}
+		}else
 		if(packageName.contains("1_12_R1")){
 			V1_12 u = new V1_12();
 			boolean bol = u.getUnbreakable(item);
 			return bol;
-		}		
+		}else	
 		if(packageName.contains("1_11_R1")){
 			V1_11 u = new V1_11();
 			boolean bol = u.getUnbreakable(item);
 			return bol;
-		}
+		}else
 		if(packageName.contains("1_10_R1")){
 			V1_10 u = new V1_10();
 			boolean bol = u.getUnbreakable(item);
 			return bol;
-		}
+		}else
 		if(packageName.contains("1_9_R2")){
 			V1_9_R2 u = new V1_9_R2();
 			boolean bol = u.getUnbreakable(item);
 			return bol;
-		}
+		}else
 		if(packageName.contains("1_9_R1")){
 			V1_9_R1 u = new V1_9_R1();
 			boolean bol = u.getUnbreakable(item);
 			return bol;
-		}
+		}else
 		if(packageName.contains("1_8_R3")){
 			V1_8_R3 u = new V1_8_R3();
 			boolean bol = u.getUnbreakable(item);
 			return bol;
-		}
+		}else
 		if(packageName.contains("1_8_R2")){
 			V1_8_R2 u = new V1_8_R2();
 			boolean bol = u.getUnbreakable(item);
 			return bol;
-		}
+		}else
 		if(packageName.contains("1_8_R1")){
 			V1_8_R1 u = new V1_8_R1();
 			boolean bol = u.getUnbreakable(item);
@@ -648,86 +720,96 @@ public class Utilidades {
 	
 	public static ItemStack setSkull(ItemStack crafteos, String path, FileConfiguration config) {
 		String packageName = Bukkit.getServer().getClass().getPackage().getName();
-		if(packageName.contains("1_18_R1")){
-			V1_18 u = new V1_18();
+		if(packageName.contains("1_19_R1")){
+			V1_19_R1 u = new V1_19_R1();
 			ItemStack stack = u.setSkull(crafteos,path,config);			
 			return stack;
-		}
+		}else
+		if(packageName.contains("1_18_R2")){
+			V1_18_R2 u = new V1_18_R2();
+			ItemStack stack = u.setSkull(crafteos,path,config);			
+			return stack;
+		}else
+		if(packageName.contains("1_18_R1")){
+			V1_18_R1 u = new V1_18_R1();
+			ItemStack stack = u.setSkull(crafteos,path,config);			
+			return stack;
+		}else
 		if(packageName.contains("1_17_R1")){
 			V1_17 u = new V1_17();
 			ItemStack stack = u.setSkull(crafteos,path,config);			
 			return stack;
-		}
+		}else
 		if(packageName.contains("1_16_R3")){
 			V1_16_R3 u = new V1_16_R3();
 			ItemStack stack = u.setSkull(crafteos,path,config);			
 			return stack;
-		}
+		}else
 		if(packageName.contains("1_16_R2")){
 			V1_16_R2 u = new V1_16_R2();
 			ItemStack stack = u.setSkull(crafteos,path,config);			
 			return stack;
-		}
+		}else
 		if(packageName.contains("1_16_R1")){
 			V1_16 u = new V1_16();
 			ItemStack stack = u.setSkull(crafteos,path,config);			
 			return stack;
-		}
+		}else
 		if(packageName.contains("1_15_R1")){
 			V1_15 u = new V1_15();
 			ItemStack stack = u.setSkull(crafteos,path,config);			
 			return stack;
-		}
+		}else
 		if(packageName.contains("1_14_R1")){
 			V1_14 u = new V1_14();
 			ItemStack stack = u.setSkull(crafteos,path,config);			
 			return stack;
-		}
+		}else
 		if(packageName.contains("1_13_R2")){
 			V1_13_R2 u = new V1_13_R2();
 			ItemStack stack = u.setSkull(crafteos,path,config);			
 			return stack;
-		}
+		}else
 		if(packageName.contains("1_13_R1")){
 			V1_13 u = new V1_13();
 			ItemStack stack = u.setSkull(crafteos,path,config);			
 			return stack;
-		}
+		}else
 		if(packageName.contains("1_12_R1")){
 			V1_12 u = new V1_12();
 			ItemStack stack = u.setSkull(crafteos,path,config);			
 			return stack;
-		}
+		}else
 		if(packageName.contains("1_11_R1")){
 			V1_11 u = new V1_11();
 			ItemStack stack = u.setSkull(crafteos,path,config);			
 			return stack;
-		}
+		}else
 		if(packageName.contains("1_10_R1")){
 			V1_10 u = new V1_10();
 			ItemStack stack = u.setSkull(crafteos,path,config);			
 			return stack;
-		}
+		}else
 		if(packageName.contains("1_9_R2")){
 			V1_9_R2 u = new V1_9_R2();
 			ItemStack stack = u.setSkull(crafteos,path,config);			
 			return stack;
-		}
+		}else
 		if(packageName.contains("1_9_R1")){
 			V1_9_R1 u = new V1_9_R1();
 			ItemStack stack = u.setSkull(crafteos,path,config);			
 			return stack;
-		}
+		}else
 		if(packageName.contains("1_8_R3")){
 			V1_8_R3 u = new V1_8_R3();
 			ItemStack stack = u.setSkull(crafteos,path,config);			
 			return stack;
-		}
+		}else
 		if(packageName.contains("1_8_R2")){
 			V1_8_R2 u = new V1_8_R2();
 			ItemStack stack = u.setSkull(crafteos,path,config);			
 			return stack;
-		}
+		}else
 		if(packageName.contains("1_8_R1")){
 			V1_8_R1 u = new V1_8_R1();
 			ItemStack stack = u.setSkull(crafteos,path,config);			
@@ -738,86 +820,96 @@ public class Utilidades {
 	
 	public static ItemStack setNBT(ItemStack item, FileConfiguration config, String key) {
 		String packageName = Bukkit.getServer().getClass().getPackage().getName();
-		if(packageName.contains("1_18_R1")){
-			V1_18 u = new V1_18();
+		if(packageName.contains("1_19_R1")){
+			V1_19_R1 u = new V1_19_R1();
 			ItemStack stack = u.setNBT(item,key,config);		
 			return stack;
-		}
+		}else
+		if(packageName.contains("1_18_R2")){
+			V1_18_R2 u = new V1_18_R2();
+			ItemStack stack = u.setNBT(item,key,config);		
+			return stack;
+		}else
+		if(packageName.contains("1_18_R1")){
+			V1_18_R1 u = new V1_18_R1();
+			ItemStack stack = u.setNBT(item,key,config);		
+			return stack;
+		}else
 		if(packageName.contains("1_17_R1")){
 			V1_17 u = new V1_17();
 			ItemStack stack = u.setNBT(item,key,config);		
 			return stack;
-		}
+		}else
 		if(packageName.contains("1_16_R3")){
 			V1_16_R3 u = new V1_16_R3();
 			ItemStack stack = u.setNBT(item,key,config);		
 			return stack;
-		}
+		}else
 		if(packageName.contains("1_16_R2")){
 			V1_16_R2 u = new V1_16_R2();
 			ItemStack stack = u.setNBT(item,key,config);		
 			return stack;
-		}
+		}else
 		if(packageName.contains("1_16_R1")){
 			V1_16 u = new V1_16();
 			ItemStack stack = u.setNBT(item,key,config);		
 			return stack;
-		}
+		}else
 		if(packageName.contains("1_15_R1")){
 			V1_15 u = new V1_15();
 			ItemStack stack = u.setNBT(item,key,config);		
 			return stack;
-		}
+		}else
 		if(packageName.contains("1_14_R1")){
 			V1_14 u = new V1_14();
 			ItemStack stack = u.setNBT(item,key,config);		
 			return stack;
-		}
+		}else
 		if(packageName.contains("1_13_R2")){
 			V1_13_R2 u = new V1_13_R2();
 			ItemStack stack = u.setNBT(item,key,config);		
 			return stack;
-		}
+		}else
 		if(packageName.contains("1_13_R1")){
 			V1_13 u = new V1_13();
 			ItemStack stack = u.setNBT(item,key,config);		
 			return stack;
-		}
+		}else
 		if(packageName.contains("1_12_R1")){
 			V1_12 u = new V1_12();
 			ItemStack stack = u.setNBT(item,key,config);		
 			return stack;
-		}
+		}else
 		if(packageName.contains("1_11_R1")){
 			V1_11 u = new V1_11();
 			ItemStack stack = u.setNBT(item,key,config);				
 			return stack;
-		}
+		}else
 		if(packageName.contains("1_10_R1")){
 			V1_10 u = new V1_10();
 			ItemStack stack = u.setNBT(item,key,config);				
 			return stack;
-		}
+		}else
 		if(packageName.contains("1_9_R2")){
 			V1_9_R2 u = new V1_9_R2();
 			ItemStack stack = u.setNBT(item,key,config);				
 			return stack;
-		}
+		}else
 		if(packageName.contains("1_9_R1")){
 			V1_9_R1 u = new V1_9_R1();
 			ItemStack stack = u.setNBT(item,key,config);				
 			return stack;
-		}
+		}else
 		if(packageName.contains("1_8_R3")){
 			V1_8_R3 u = new V1_8_R3();
 			ItemStack stack = u.setNBT(item,key,config);				
 			return stack;
-		}
+		}else
 		if(packageName.contains("1_8_R2")){
 			V1_8_R2 u = new V1_8_R2();
 			ItemStack stack = u.setNBT(item,key,config);				
 			return stack;
-		}
+		}else
 		if(packageName.contains("1_8_R1")){
 			V1_8_R1 u = new V1_8_R1();
 			ItemStack stack = u.setNBT(item,key,config);			
@@ -828,86 +920,96 @@ public class Utilidades {
 	
 	public static ItemStack setAttributes(ItemStack item, FileConfiguration config, String key) {
 		String packageName = Bukkit.getServer().getClass().getPackage().getName();
-		if(packageName.contains("1_18_R1")){
-			V1_18 u = new V1_18();
+		if(packageName.contains("1_19_R1")){
+			V1_19_R1 u = new V1_19_R1();
 			ItemStack stack = u.setAttributes(item,key,config);		
 			return stack;
-		}
+		}else
+		if(packageName.contains("1_18_R2")){
+			V1_18_R2 u = new V1_18_R2();
+			ItemStack stack = u.setAttributes(item,key,config);		
+			return stack;
+		}else
+		if(packageName.contains("1_18_R1")){
+			V1_18_R1 u = new V1_18_R1();
+			ItemStack stack = u.setAttributes(item,key,config);		
+			return stack;
+		}else
 		if(packageName.contains("1_17_R1")){
 			V1_17 u = new V1_17();
 			ItemStack stack = u.setAttributes(item,key,config);		
 			return stack;
-		}
+		}else
 		if(packageName.contains("1_16_R3")){
 			V1_16_R3 u = new V1_16_R3();
 			ItemStack stack = u.setAttributes(item,key,config);		
 			return stack;
-		}
+		}else
 		if(packageName.contains("1_16_R2")){
 			V1_16_R2 u = new V1_16_R2();
 			ItemStack stack = u.setAttributes(item,key,config);		
 			return stack;
-		}
+		}else
 		if(packageName.contains("1_16_R1")){
 			V1_16 u = new V1_16();
 			ItemStack stack = u.setAttributes(item,key,config);		
 			return stack;
-		}
+		}else
 		if(packageName.contains("1_15_R1")){
 			V1_15 u = new V1_15();
 			ItemStack stack = u.setAttributes(item,key,config);		
 			return stack;
-		}
+		}else
 		if(packageName.contains("1_14_R1")){
 			V1_14 u = new V1_14();
 			ItemStack stack = u.setAttributes(item,key,config);		
 			return stack;
-		}
+		}else
 		if(packageName.contains("1_13_R2")){
 			V1_13_R2 u = new V1_13_R2();
 			ItemStack stack = u.setAttributes(item,key,config);		
 			return stack;
-		}
+		}else
 		if(packageName.contains("1_13_R1")){
 			V1_13 u = new V1_13();
 			ItemStack stack = u.setAttributes(item,key,config);		
 			return stack;
-		}
+		}else
 		if(packageName.contains("1_12_R1")){
 			V1_12 u = new V1_12();
 			ItemStack stack = u.setAttributes(item,key,config);		
 			return stack;
-		}
+		}else
 		if(packageName.contains("1_11_R1")){
 			V1_11 u = new V1_11();
 			ItemStack stack = u.setAttributes(item,key,config);				
 			return stack;
-		}
+		}else
 		if(packageName.contains("1_10_R1")){
 			V1_10 u = new V1_10();
 			ItemStack stack = u.setAttributes(item,key,config);				
 			return stack;
-		}
+		}else
 		if(packageName.contains("1_9_R2")){
 			V1_9_R2 u = new V1_9_R2();
 			ItemStack stack = u.setAttributes(item,key,config);				
 			return stack;
-		}
+		}else
 		if(packageName.contains("1_9_R1")){
 			V1_9_R1 u = new V1_9_R1();
 			ItemStack stack = u.setAttributes(item,key,config);				
 			return stack;
-		}
+		}else
 		if(packageName.contains("1_8_R3")){
 			V1_8_R3 u = new V1_8_R3();
 			ItemStack stack = u.setAttributes(item,key,config);				
 			return stack;
-		}
+		}else
 		if(packageName.contains("1_8_R2")){
 			V1_8_R2 u = new V1_8_R2();
 			ItemStack stack = u.setAttributes(item,key,config);				
 			return stack;
-		}
+		}else
 		if(packageName.contains("1_8_R1")){
 			V1_8_R1 u = new V1_8_R1();
 			ItemStack stack = u.setAttributes(item,key,config);			
@@ -918,42 +1020,50 @@ public class Utilidades {
 	
 	public static ItemStack setSkull(ItemStack item, String id, String textura) {
 		String packageName = Bukkit.getServer().getClass().getPackage().getName();
-		if(packageName.contains("1_18_R1")){
-			V1_18 u = new V1_18();
+		if(packageName.contains("1_19_R1")){
+			V1_19_R1 u = new V1_19_R1();
 			return u.setSkullSinID(item,textura);	
-		}
+		}else
+		if(packageName.contains("1_18_R2")){
+			V1_18_R2 u = new V1_18_R2();
+			return u.setSkullSinID(item,textura);	
+		}else
+		if(packageName.contains("1_18_R1")){
+			V1_18_R1 u = new V1_18_R1();
+			return u.setSkullSinID(item,textura);	
+		}else
 		if(packageName.contains("1_17_R1")){
 			V1_17 u = new V1_17();
 			return u.setSkullSinID(item,textura);	
-		}
+		}else
 		if(packageName.contains("1_16_R3")){
 			V1_16_R3 u = new V1_16_R3();
 			return u.setSkullSinID(item,textura);	
-		}
+		}else
 		if(packageName.contains("1_16_R2")){
 			V1_16_R2 u = new V1_16_R2();
 			return u.setSkullSinID(item,textura);	
-		}
+		}else
 		if(packageName.contains("1_16_R1")){
 			V1_16 u = new V1_16();
 			return u.setSkullSinID(item,textura);	
-		}
+		}else
 		if(packageName.contains("1_15_R1")){
 			V1_15 u = new V1_15();
 			return u.setSkull(item, id, textura);	
-		}
+		}else
 		if(packageName.contains("1_14_R1")){
 			V1_14 u = new V1_14();
 			return u.setSkull(item, id, textura);		
-		}
+		}else
 		if(packageName.contains("1_13_R2")){
 			V1_13_R2 u = new V1_13_R2();
 			return u.setSkull(item, id, textura);			
-		}
+		}else
 		if(packageName.contains("1_13_R1")){
 			V1_13 u = new V1_13();
 			return u.setSkull(item, id, textura);		
-		}
+		}else
 		if(packageName.contains("1_12_R1")){
 			V1_12 u = new V1_12();
 			return u.setSkull(item, id, textura);		
