@@ -222,7 +222,7 @@ public class V1_8_R1 {
 						&& !t.equals("Enchantments") && !t.equals("Damage") && !t.equals("CustomModelData") && !t.equals("Potion")
 						&& !t.equals("StoredEnchantments") && !t.equals("CustomPotionColor") && !t.equals("CustomPotionEffects") && !t.equals("Fireworks")
 						&& !t.equals("Explosion")&& !t.equals("pages") && !t.equals("title") && !t.equals("author") && !t.equals("resolved")
-						&& !t.equals("generation") && !t.equals("BlockEntityTag")) {
+						&& !t.equals("generation")) {
 					if(itemTag.hasKeyOfType(t, 1)) {
 						//boolean
 						listaNBT.add(t+";"+itemTag.getBoolean(t)+";boolean");
@@ -232,6 +232,9 @@ public class V1_8_R1 {
 					}else if(itemTag.hasKeyOfType(t, 6)) {
 						//double
 						listaNBT.add(t+";"+itemTag.getDouble(t)+";double");
+					}else if(itemTag.hasKeyOfType(t, 10)){
+						//Compound
+						listaNBT.add(t+";"+itemTag.getCompound(t)+";compound");
 					}else if(itemTag.hasKeyOfType(t, 8)) {
 						//String
 						listaNBT.add(t+";"+itemTag.getString(t));
@@ -259,25 +262,22 @@ public class V1_8_R1 {
 			String[] sep = nbt.split(";");
 			String id = sep[0];
 			String type = sep[sep.length-1];
-			if(sep[1].startsWith("{")) {
+			if(type.equals("boolean")) {
+				tag.setBoolean(sep[0], Boolean.valueOf(sep[1]));
+			}else if(type.equals("double")) {
+				tag.setDouble(sep[0], Double.valueOf(sep[1]));
+			}else if(type.equals("int")) {
+				tag.setInt(sep[0], Integer.valueOf(sep[1]));
+			}else if(type.equals("compound")) {
 				try {
-					net.minecraft.server.v1_8_R1.NBTTagCompound tagNew = net.minecraft.server.v1_8_R1.MojangsonParser.parse(nbt.replace(id+";", ""));
+					String finalNBT = nbt.replace(id+";", "").replace(";compound", "");
+					net.minecraft.server.v1_8_R1.NBTTagCompound tagNew = net.minecraft.server.v1_8_R1.MojangsonParser.parse(finalNBT);
 					tag.set(sep[0], tagNew);
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-
 			}else {
-				if(type.equals("boolean")) {
-					tag.setBoolean(sep[0], Boolean.valueOf(sep[1]));
-				}else if(type.equals("double")) {
-					tag.setDouble(sep[0], Double.valueOf(sep[1]));
-				}else if(type.equals("int")) {
-					tag.setInt(sep[0], Integer.valueOf(sep[1]));
-				}else {
-					tag.setString(sep[0], nbt.replace(id+";", ""));
-				}
+				tag.setString(sep[0], nbt.replace(id+";", ""));
 			}
 			
 		}

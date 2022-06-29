@@ -113,30 +113,32 @@ public class KitManager {
 				datavalue = item.getData().getData();
 			}
 		}
-		if(id.name().contains("POTION") || id.name().equals("TIPPED_ARROW")){		
-			PotionMeta meta = (PotionMeta) item.getItemMeta();
-			if(meta.hasCustomEffects()) {
-				List<PotionEffect> efectos = meta.getCustomEffects();
-				List<String> lista = new ArrayList<String>();
-				for(int i=0;i<efectos.size();i++) {
-					String tipo = efectos.get(i).getType().getName();
-					int amplifier = efectos.get(i).getAmplifier();
-					int duracion = efectos.get(i).getDuration();
-					lista.add(tipo+";"+amplifier+";"+duracion);
-				}
-				kitConfig.set(path+".potion-effects", lista);
-			}
-			if(!Bukkit.getVersion().contains("1.8")){
-				if(!Bukkit.getVersion().contains("1.9")) {
-					if(meta.hasColor()) {
-						kitConfig.set(path+".potion-color", meta.getColor().asRGB()+"");
+		if(id.name().contains("POTION") || id.name().equals("TIPPED_ARROW")){	
+			if(item.getItemMeta() instanceof PotionMeta) {
+				PotionMeta meta = (PotionMeta) item.getItemMeta();
+				if(meta.hasCustomEffects()) {
+					List<PotionEffect> efectos = meta.getCustomEffects();
+					List<String> lista = new ArrayList<String>();
+					for(int i=0;i<efectos.size();i++) {
+						String tipo = efectos.get(i).getType().getName();
+						int amplifier = efectos.get(i).getAmplifier();
+						int duracion = efectos.get(i).getDuration();
+						lista.add(tipo+";"+amplifier+";"+duracion);
 					}
+					kitConfig.set(path+".potion-effects", lista);
 				}
-				PotionData data = meta.getBasePotionData();
-				kitConfig.set(path+".potion-type", data.getType()+"");
-				kitConfig.set(path+".potion-upgraded", data.isUpgraded()+"");
-				kitConfig.set(path+".potion-extended", data.isExtended()+"");
-			}										
+				if(!Bukkit.getVersion().contains("1.8")){
+					if(!Bukkit.getVersion().contains("1.9")) {
+						if(meta.hasColor()) {
+							kitConfig.set(path+".potion-color", meta.getColor().asRGB()+"");
+						}
+					}
+					PotionData data = meta.getBasePotionData();
+					kitConfig.set(path+".potion-type", data.getType()+"");
+					kitConfig.set(path+".potion-upgraded", data.isUpgraded()+"");
+					kitConfig.set(path+".potion-extended", data.isExtended()+"");
+				}
+			}											
 		}
 		if(Bukkit.getVersion().contains("1.11") || Bukkit.getVersion().contains("1.12")){
 			if(id == Material.valueOf("MONSTER_EGG")) {
@@ -395,30 +397,33 @@ public class KitManager {
 			  crafteos.setDurability(Short.valueOf(kitConfig.getString(pathdurability)));
 		  }
 		  if((crafteos.getType().name().contains("POTION") || crafteos.getType().name().contains("TIPPED_ARROW"))) {
-			  PotionMeta meta = (PotionMeta) crafteos.getItemMeta();
-			  if(!Bukkit.getVersion().contains("1.8")){
-				  boolean isUpgraded = Boolean.valueOf(kitConfig.getString(path+".potion-upgraded"));
-				  boolean isExtended = Boolean.valueOf(kitConfig.getString(path+".potion-extended"));
-				  PotionType type = PotionType.valueOf(kitConfig.getString(path+".potion-type"));
-				  meta.setBasePotionData(new PotionData(type,isExtended,isUpgraded));
-				  String pathColor = path+".potion-color";
-				  if(kitConfig.contains(pathColor)) {
-					  meta.setColor(Color.fromRGB(Integer.valueOf(kitConfig.getString(pathColor))));
+			  if(crafteos.getItemMeta() instanceof PotionMeta) {
+				  PotionMeta meta = (PotionMeta) crafteos.getItemMeta();
+				  if(!Bukkit.getVersion().contains("1.8")){
+					  boolean isUpgraded = Boolean.valueOf(kitConfig.getString(path+".potion-upgraded"));
+					  boolean isExtended = Boolean.valueOf(kitConfig.getString(path+".potion-extended"));
+					  PotionType type = PotionType.valueOf(kitConfig.getString(path+".potion-type"));
+					  meta.setBasePotionData(new PotionData(type,isExtended,isUpgraded));
+					  String pathColor = path+".potion-color";
+					  if(kitConfig.contains(pathColor)) {
+						  meta.setColor(Color.fromRGB(Integer.valueOf(kitConfig.getString(pathColor))));
+					  }
+			      }
+				  String pathefectos = path+".potion-effects";
+				  if(kitConfig.contains(pathefectos)) {
+					  List<String> efectos = kitConfig.getStringList(pathefectos);
+					  for(int i=0;i<efectos.size();i++) {
+						  String[] separados = efectos.get(i).split(";");
+							String tipoPocion = separados[0];
+							int amplifier = Integer.valueOf(separados[1]);
+							int duracion = Integer.valueOf(separados[2]);
+							meta.addCustomEffect(new PotionEffect(PotionEffectType.getByName(tipoPocion),duracion,amplifier), false);
+					  }
 				  }
-		      }
-			  String pathefectos = path+".potion-effects";
-			  if(kitConfig.contains(pathefectos)) {
-				  List<String> efectos = kitConfig.getStringList(pathefectos);
-				  for(int i=0;i<efectos.size();i++) {
-					  String[] separados = efectos.get(i).split(";");
-						String tipoPocion = separados[0];
-						int amplifier = Integer.valueOf(separados[1]);
-						int duracion = Integer.valueOf(separados[2]);
-						meta.addCustomEffect(new PotionEffect(PotionEffectType.getByName(tipoPocion),duracion,amplifier), false);
-				  }
-			  }
+				  
+				  crafteos.setItemMeta(meta);
+			  }  
 			  
-			  crafteos.setItemMeta(meta);
 		  }
     		  if(id.contains(":")){
     			  if(idsplit[0].equals("383") || idsplit[0].equals("MONSTER_EGG")){

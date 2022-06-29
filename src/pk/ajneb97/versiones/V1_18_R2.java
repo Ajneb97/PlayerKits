@@ -23,6 +23,7 @@ import com.google.common.collect.Multimap;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 
+import net.minecraft.nbt.MojangsonParser;
 import net.minecraft.nbt.NBTTagCompound;
 
 
@@ -212,7 +213,7 @@ public class V1_18_R2 {
 							&& !t.equals("Enchantments") && !t.equals("Damage") && !t.equals("CustomModelData") && !t.equals("Potion")
 							&& !t.equals("StoredEnchantments") && !t.equals("CustomPotionColor") && !t.equals("CustomPotionEffects") && !t.equals("Fireworks")
 							&& !t.equals("Explosion")&& !t.equals("pages") && !t.equals("title") && !t.equals("author") && !t.equals("resolved")
-							&& !t.equals("generation") && !t.equals("BlockEntityTag")) {
+							&& !t.equals("generation")) {
 						if(itemTag.b(t, 1)) {
 							//boolean
 							listaNBT.add(t+";"+itemTag.q(t)+";boolean");
@@ -222,6 +223,9 @@ public class V1_18_R2 {
 						}else if(itemTag.b(t, 6)) {
 							//double
 							listaNBT.add(t+";"+itemTag.k(t)+";double");
+						}else if(itemTag.b(t, 10)){
+							//Compound
+							listaNBT.add(t+";"+itemTag.p(t)+";compound");
 						}else if(itemTag.b(t, 8)) {
 							//String
 							listaNBT.add(t+";"+itemTag.l(t));
@@ -258,26 +262,22 @@ public class V1_18_R2 {
 				String[] sep = nbt.split(";");
 				String id = sep[0];
 				String type = sep[sep.length-1];
-				if(sep[1].startsWith("{")) {
+				if(type.equals("boolean")) {
+					tag.a(sep[0], Boolean.valueOf(sep[1]));
+				}else if(type.equals("double")) {
+					tag.a(sep[0], Double.valueOf(sep[1]));
+				}else if(type.equals("int")) {
+					tag.a(sep[0], Integer.valueOf(sep[1]));
+				}else if(type.equals("compound")) {
 					try {
-						net.minecraft.nbt.NBTTagCompound tagNew = net.minecraft.nbt.MojangsonParser.a(nbt.replace(id+";", ""));
+						String finalNBT = nbt.replace(id+";", "").replace(";compound", "");
+						NBTTagCompound tagNew = MojangsonParser.a(finalNBT);
 						tag.a(sep[0], tagNew);
 					} catch (Exception e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-
 				}else {
-					if(type.equals("boolean")) {
-						tag.a(sep[0], Boolean.valueOf(sep[1]));
-					}else if(type.equals("double")) {
-						tag.a(sep[0], Double.valueOf(sep[1]));
-					}else if(type.equals("int")) {
-						tag.a(sep[0], Integer.valueOf(sep[1]));
-					}else {
-						//String
-						tag.a(sep[0], nbt.replace(id+";", ""));
-					}
+					tag.a(sep[0], nbt.replace(id+";", ""));
 				}
 				
 			}

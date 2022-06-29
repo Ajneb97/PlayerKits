@@ -232,7 +232,7 @@ public class V1_17 {
 							&& !t.equals("Enchantments") && !t.equals("Damage") && !t.equals("CustomModelData") && !t.equals("Potion")
 							&& !t.equals("StoredEnchantments") && !t.equals("CustomPotionColor") && !t.equals("CustomPotionEffects") && !t.equals("Fireworks")
 							&& !t.equals("Explosion")&& !t.equals("pages") && !t.equals("title") && !t.equals("author") && !t.equals("resolved")
-							&& !t.equals("generation") && !t.equals("BlockEntityTag")) {
+							&& !t.equals("generation")) {
 						
 						if((boolean)itemTag.getClass().getMethod("hasKeyOfType",String.class,int.class).invoke(itemTag,t,1)) {
 							//boolean
@@ -244,6 +244,9 @@ public class V1_17 {
 						}else if((boolean)itemTag.getClass().getMethod("hasKeyOfType",String.class,int.class).invoke(itemTag,t,6)) {
 							//double
 							listaNBT.add(t+";"+itemTag.getClass().getMethod("getDouble",String.class).invoke(itemTag,t)+";double");
+						}else if((boolean)itemTag.getClass().getMethod("hasKeyOfType",String.class,int.class).invoke(itemTag,t,10)) {
+							//Compound
+							listaNBT.add(t+";"+itemTag.getClass().getMethod("getCompound",String.class).invoke(itemTag,t)+";compound");
 						}else if((boolean)itemTag.getClass().getMethod("hasKeyOfType",String.class,int.class).invoke(itemTag,t,8)) {
 							//String
 							listaNBT.add(t+";"+itemTag.getClass().getMethod("getString",String.class).invoke(itemTag,t));
@@ -280,27 +283,23 @@ public class V1_17 {
 				String[] sep = nbt.split(";");
 				String id = sep[0];
 				String type = sep[sep.length-1];
-				if(sep[1].startsWith("{")) {
+
+				if(type.equals("boolean")) {
+					tag.getClass().getMethod("setBoolean",String.class,boolean.class).invoke(tag,sep[0],Boolean.valueOf(sep[1]));
+				}else if(type.equals("double")) {
+					tag.getClass().getMethod("setDouble",String.class,double.class).invoke(tag,sep[0],Double.valueOf(sep[1]));
+				}else if(type.equals("int")) {
+					tag.getClass().getMethod("setInt",String.class,int.class).invoke(tag,sep[0],Integer.valueOf(sep[1]));
+				}else if(type.equals("compound")) {
 					try {
-						
-						net.minecraft.nbt.NBTTagCompound tagNew =  (NBTTagCompound) net.minecraft.nbt.MojangsonParser.class.getMethod("parse", String.class).invoke(null, nbt.replace(id+";", ""));
+						String finalNBT = nbt.replace(id+";", "").replace(";compound", "");
+						NBTTagCompound tagNew = (NBTTagCompound) net.minecraft.nbt.MojangsonParser.class.getMethod("parse", String.class).invoke(null, finalNBT);
 						tag.getClass().getMethod("set",String.class,NBTBase.class).invoke(tag,sep[0],tagNew);
 					} catch (Exception e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-
 				}else {
-					if(type.equals("boolean")) {
-						tag.getClass().getMethod("setBoolean",String.class,boolean.class).invoke(tag,sep[0],Boolean.valueOf(sep[1]));
-					}else if(type.equals("double")) {
-						tag.getClass().getMethod("setDouble",String.class,double.class).invoke(tag,sep[0],Double.valueOf(sep[1]));
-					}else if(type.equals("int")) {
-						tag.getClass().getMethod("setInt",String.class,int.class).invoke(tag,sep[0],Integer.valueOf(sep[1]));
-					}else {
-						tag.getClass().getMethod("setString",String.class,String.class).invoke(tag,sep[0],nbt.replace(id+";", ""));
-					}
-					
+					tag.getClass().getMethod("setString",String.class,String.class).invoke(tag,sep[0],nbt.replace(id+";", ""));
 				}
 				
 			}
