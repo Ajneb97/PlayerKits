@@ -9,8 +9,15 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
 
+import pk.ajneb97.api.PlayerKitsAPI;
+
 public class V1_14 {
 
+	private String sepChar;
+	public V1_14() {
+		sepChar = PlayerKitsAPI.getNBTSeparationCharacter();
+	}
+	
 	public void guardarSkullDisplay(ItemStack item, String path, FileConfiguration config) {
 		net.minecraft.server.v1_14_R1.ItemStack cabeza = org.bukkit.craftbukkit.v1_14_R1.inventory.CraftItemStack.asNMSCopy(item);
 		net.minecraft.server.v1_14_R1.NBTTagCompound cabezaTag = cabeza.getTag();
@@ -227,22 +234,22 @@ public class V1_14 {
 						&& !t.equals("generation")) {
 					if(itemTag.hasKeyOfType(t, 1)) {
 						//boolean
-						listaNBT.add(t+";"+itemTag.getBoolean(t)+";boolean");
+						listaNBT.add(t+sepChar+itemTag.getBoolean(t)+sepChar+"boolean");
 					}else if(itemTag.hasKeyOfType(t, 3)) {
 						//int
-						listaNBT.add(t+";"+itemTag.getInt(t)+";int");
+						listaNBT.add(t+sepChar+itemTag.getInt(t)+sepChar+"int");
 					}else if(itemTag.hasKeyOfType(t, 6)) {
 						//double
-						listaNBT.add(t+";"+itemTag.getDouble(t)+";double");
+						listaNBT.add(t+sepChar+itemTag.getDouble(t)+sepChar+"double");
 					}else if(itemTag.hasKeyOfType(t, 10)){
 						//Compound
-						listaNBT.add(t+";"+itemTag.getCompound(t)+";compound");
+						listaNBT.add(t+sepChar+itemTag.getCompound(t)+sepChar+"compound");
 					}else if(itemTag.hasKeyOfType(t, 8)) {
 						//String
-						listaNBT.add(t+";"+itemTag.getString(t));
+						listaNBT.add(t+sepChar+itemTag.getString(t));
 					}else {
 						//compound
-						listaNBT.add(t+";"+itemTag.get(t));
+						listaNBT.add(t+sepChar+itemTag.get(t));
 					}
 				}	
 			}
@@ -260,7 +267,7 @@ public class V1_14 {
 		for(int i=0;i<listaNBT.size();i++) {
 			
 			String nbt = listaNBT.get(i);
-			String[] sep = nbt.split(";");
+			String[] sep = nbt.split("\\"+sepChar);
 			String id = sep[0];
 			String type = sep[sep.length-1];
 			if(type.equals("boolean")) {
@@ -271,14 +278,14 @@ public class V1_14 {
 				tag.setInt(sep[0], Integer.valueOf(sep[1]));
 			}else if(type.equals("compound")) {
 				try {
-					String finalNBT = nbt.replace(id+";", "").replace(";compound", "");
+					String finalNBT = nbt.replace(id+sepChar, "").replace(sepChar+"compound", "");
 					net.minecraft.server.v1_14_R1.NBTTagCompound tagNew = net.minecraft.server.v1_14_R1.MojangsonParser.parse(finalNBT);
 					tag.set(sep[0], tagNew);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}else {
-				tag.setString(sep[0], nbt.replace(id+";", ""));
+				tag.setString(sep[0], nbt.replace(id+sepChar, ""));
 			}
 			
 		}

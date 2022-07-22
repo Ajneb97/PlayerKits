@@ -30,4 +30,8 @@ private static PlayerKits plugin;
 			return cooldown;
 		}
 	}
+	
+	public static String getNBTSeparationCharacter() {
+		return plugin.getNbtSeparationChar();
+	}
 }

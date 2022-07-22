@@ -1,5 +1,5 @@
 main: pk.ajneb97.PlayerKits
-version: 2.24.2
+version: 2.24.3
 name: PlayerKits
 api-version: 1.13
 softdepend: [Vault,PlaceholderAPI]

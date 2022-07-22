@@ -25,9 +25,15 @@ import com.mojang.authlib.properties.Property;
 
 import net.minecraft.nbt.MojangsonParser;
 import net.minecraft.nbt.NBTTagCompound;
+import pk.ajneb97.api.PlayerKitsAPI;
 
 
 public class V1_18_R1 {
+	
+	private String sepChar;
+	public V1_18_R1() {
+		sepChar = PlayerKitsAPI.getNBTSeparationCharacter();
+	}
 	
 	public ItemStack setSkullSinID(ItemStack item, String textura) {
 		if (textura.isEmpty()) return item;
@@ -217,22 +223,22 @@ public class V1_18_R1 {
 							&& !t.equals("generation")) {
 						if(itemTag.b(t, 1)) {
 							//boolean
-							listaNBT.add(t+";"+itemTag.q(t)+";boolean");
+							listaNBT.add(t+sepChar+itemTag.q(t)+sepChar+"boolean");
 						}else if(itemTag.b(t, 3)) {
 							//int
-							listaNBT.add(t+";"+itemTag.h(t)+";int");
+							listaNBT.add(t+sepChar+itemTag.h(t)+sepChar+"int");
 						}else if(itemTag.b(t, 6)) {
 							//double
-							listaNBT.add(t+";"+itemTag.k(t)+";double");
+							listaNBT.add(t+sepChar+itemTag.k(t)+sepChar+"double");
 						}else if(itemTag.b(t, 10)){
 							//Compound
-							listaNBT.add(t+";"+itemTag.p(t)+";compound");
+							listaNBT.add(t+sepChar+itemTag.p(t)+sepChar+"compound");
 						}else if(itemTag.b(t, 8)) {
 							//String
-							listaNBT.add(t+";"+itemTag.l(t));
+							listaNBT.add(t+sepChar+itemTag.l(t));
 						}else {
 							//compound
-							listaNBT.add(t+";"+itemTag.c(t));
+							listaNBT.add(t+sepChar+itemTag.c(t));
 						}
 					}	
 				}
@@ -259,7 +265,7 @@ public class V1_18_R1 {
 			for(int i=0;i<listaNBT.size();i++) {
 				
 				String nbt = listaNBT.get(i);
-				String[] sep = nbt.split(";");
+				String[] sep = nbt.split("\\"+sepChar);
 				String id = sep[0];
 				String type = sep[sep.length-1];
 				if(type.equals("boolean")) {
@@ -270,14 +276,14 @@ public class V1_18_R1 {
 					tag.a(sep[0], Integer.valueOf(sep[1]));
 				}else if(type.equals("compound")) {
 					try {
-						String finalNBT = nbt.replace(id+";", "").replace(";compound", "");
+						String finalNBT = nbt.replace(id+sepChar, "").replace(sepChar+"compound", "");
 						NBTTagCompound tagNew = MojangsonParser.a(finalNBT);
 						tag.a(sep[0], tagNew);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
 				}else {
-					tag.a(sep[0], nbt.replace(id+";", ""));
+					tag.a(sep[0], nbt.replace(id+sepChar, ""));
 				}
 				
 			}

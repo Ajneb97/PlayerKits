@@ -69,6 +69,8 @@ public class PlayerKits extends JavaPlugin {
 	
 	private PlayerDataSaveTask playerDataSaveTask;
 	
+	private String nbtSeparationChar;
+	
 	public void onEnable(){
 	   this.inventarioJugadores = new ArrayList<InventarioJugador>();
 	   registerEvents();
@@ -89,13 +91,14 @@ public class PlayerKits extends JavaPlugin {
 	   }
 	   jugadorManager = new JugadorManager(this);
 	   PlayerKitsAPI api = new PlayerKitsAPI(this);
+	   
 	   if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null){
 		   new ExpansionPlayerKits(this).register();
 	   }
 	   checkMessagesUpdate();
 	   
 	   reloadPlayerDataSaveTask();
-	   
+	   setNbtSeparationChar();
 	   Bukkit.getConsoleSender().sendMessage(nombrePlugin+ChatColor.YELLOW + "Has been enabled! " + ChatColor.WHITE + "Version: " + version);
 	   Bukkit.getConsoleSender().sendMessage(nombrePlugin+ChatColor.YELLOW + "Thanks for using my plugin!  " + ChatColor.WHITE + "~Ajneb97");
 	   updateChecker();
@@ -299,11 +302,29 @@ public class PlayerKits extends JavaPlugin {
 	  public JugadorManager getJugadorManager() {
 		return jugadorManager;
 	}
+	  
+	
+
+	public String getNbtSeparationChar() {
+		return nbtSeparationChar;
+	}
+
+	public void setNbtSeparationChar() {
+		if(getConfig().getBoolean("Config.nbt_alternative_data_save")) {
+			nbtSeparationChar = "|";
+		}else {
+			nbtSeparationChar = ";";
+		}
+	}
 
 	public void checkMessagesUpdate(){
 		  Path archivo = Paths.get(rutaConfig);
 		  try{
 			  String texto = new String(Files.readAllBytes(archivo));
+			  if(!texto.contains("nbt_alternative_data_save:")){
+				  getConfig().set("Config.nbt_alternative_data_save", false);
+				  saveConfig();
+			  }
 			  if(!texto.contains("claim_kit_short_command:")){
 				  getConfig().set("Config.claim_kit_short_command", false);
 				  getConfig().set("Config.inventory_pages_names.1", "&9Kits");

@@ -70,6 +70,7 @@ Config:
     kit_page_sound: BLOCK_LAVA_POP;10;1
     update_notify: true
     player_data_save_time: 300
+    nbt_alternative_data_save: false
     inventory_pages_names:
       1: "&9Kits"
       2: "&bVIP Kits"

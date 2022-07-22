@@ -37,6 +37,7 @@ import pk.ajneb97.versiones.V1_9_R2;
 
 public class Utilidades {
 	
+	
 	public static boolean isLegacy() {
 		if(Bukkit.getVersion().contains("1.13") || Bukkit.getVersion().contains("1.14") ||
 				Bukkit.getVersion().contains("1.15") || Bukkit.getVersion().contains("1.16")

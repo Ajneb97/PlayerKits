@@ -26,10 +26,16 @@ import com.mojang.authlib.properties.Property;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import pk.ajneb97.api.PlayerKitsAPI;
 
 
 
 public class V1_17 {
+	
+	private String sepChar;
+	public V1_17() {
+		sepChar = PlayerKitsAPI.getNBTSeparationCharacter();
+	}
 	
 	public ItemStack setSkullSinID(ItemStack item, String textura) {
 		if (textura.isEmpty()) return item;
@@ -236,23 +242,23 @@ public class V1_17 {
 						
 						if((boolean)itemTag.getClass().getMethod("hasKeyOfType",String.class,int.class).invoke(itemTag,t,1)) {
 							//boolean
-							listaNBT.add(t+";"+itemTag.getClass().getMethod("getBoolean",String.class).invoke(itemTag,t)+";boolean");
+							listaNBT.add(t+sepChar+itemTag.getClass().getMethod("getBoolean",String.class).invoke(itemTag,t)+sepChar+"boolean");
 							
 						}else if((boolean)itemTag.getClass().getMethod("hasKeyOfType",String.class,int.class).invoke(itemTag,t,3)) {
 							//int
-							listaNBT.add(t+";"+itemTag.getClass().getMethod("getInt",String.class).invoke(itemTag,t)+";int");
+							listaNBT.add(t+sepChar+itemTag.getClass().getMethod("getInt",String.class).invoke(itemTag,t)+sepChar+"int");
 						}else if((boolean)itemTag.getClass().getMethod("hasKeyOfType",String.class,int.class).invoke(itemTag,t,6)) {
 							//double
-							listaNBT.add(t+";"+itemTag.getClass().getMethod("getDouble",String.class).invoke(itemTag,t)+";double");
+							listaNBT.add(t+sepChar+itemTag.getClass().getMethod("getDouble",String.class).invoke(itemTag,t)+sepChar+"double");
 						}else if((boolean)itemTag.getClass().getMethod("hasKeyOfType",String.class,int.class).invoke(itemTag,t,10)) {
 							//Compound
-							listaNBT.add(t+";"+itemTag.getClass().getMethod("getCompound",String.class).invoke(itemTag,t)+";compound");
+							listaNBT.add(t+sepChar+itemTag.getClass().getMethod("getCompound",String.class).invoke(itemTag,t)+sepChar+"compound");
 						}else if((boolean)itemTag.getClass().getMethod("hasKeyOfType",String.class,int.class).invoke(itemTag,t,8)) {
 							//String
-							listaNBT.add(t+";"+itemTag.getClass().getMethod("getString",String.class).invoke(itemTag,t));
+							listaNBT.add(t+sepChar+itemTag.getClass().getMethod("getString",String.class).invoke(itemTag,t));
 						}else {
 							//compound
-							listaNBT.add(t+";"+itemTag.getClass().getMethod("get",String.class).invoke(itemTag,t));
+							listaNBT.add(t+sepChar+itemTag.getClass().getMethod("get",String.class).invoke(itemTag,t));
 						}
 					}	
 				}
@@ -280,7 +286,7 @@ public class V1_17 {
 			for(int i=0;i<listaNBT.size();i++) {
 				
 				String nbt = listaNBT.get(i);
-				String[] sep = nbt.split(";");
+				String[] sep = nbt.split("\\"+sepChar);
 				String id = sep[0];
 				String type = sep[sep.length-1];
 
@@ -292,14 +298,14 @@ public class V1_17 {
 					tag.getClass().getMethod("setInt",String.class,int.class).invoke(tag,sep[0],Integer.valueOf(sep[1]));
 				}else if(type.equals("compound")) {
 					try {
-						String finalNBT = nbt.replace(id+";", "").replace(";compound", "");
+						String finalNBT = nbt.replace(id+sepChar, "").replace(sepChar+"compound", "");
 						NBTTagCompound tagNew = (NBTTagCompound) net.minecraft.nbt.MojangsonParser.class.getMethod("parse", String.class).invoke(null, finalNBT);
 						tag.getClass().getMethod("set",String.class,NBTBase.class).invoke(tag,sep[0],tagNew);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
 				}else {
-					tag.getClass().getMethod("setString",String.class,String.class).invoke(tag,sep[0],nbt.replace(id+";", ""));
+					tag.getClass().getMethod("setString",String.class,String.class).invoke(tag,sep[0],nbt.replace(id+sepChar, ""));
 				}
 				
 			}
