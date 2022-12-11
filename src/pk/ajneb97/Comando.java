@@ -145,7 +145,20 @@ public class Comando implements CommandExecutor,TabCompleter {
 				   String kit = getKit(configKits,args[1]);
 				   if(kit != null) {
 					   if(configKits.contains("Kits."+kit+".slot") || jugador.isOp() || jugador.hasPermission("playerkits.admin")) {
-						   InventarioPreview.abrirInventarioPreview(plugin, jugador, configKits, config, kit, 1);
+						   	boolean hasPermission = true;
+							if(configKits.contains("Kits."+kit+".permission")) {
+								String permission = configKits.getString("Kits."+kit+".permission");
+								if(!jugador.isOp() && !jugador.hasPermission(permission)) {
+									hasPermission = false;
+								}
+							}
+							boolean permissionCheck = config.getBoolean("Config.preview_inventory_requires_permission");
+							if(permissionCheck && !hasPermission) {
+								jugador.sendMessage(MensajesUtils.getMensajeColor(prefix+config.getString("Messages.cantPreviewError")));
+								return true;
+							}
+							
+							InventarioPreview.abrirInventarioPreview(plugin, jugador, configKits, config, kit, 1);
 					   }else {
 						   jugador.sendMessage(MensajesUtils.getMensajeColor(prefix+config.getString("Messages.kitDoesNotExists").replace("%name%", args[1]))); 
 					   }	   

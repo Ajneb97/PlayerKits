@@ -212,7 +212,7 @@ public class V1_18_R1 {
 		try {
 			net.minecraft.nbt.NBTTagCompound itemTag = (NBTTagCompound) itemModificado.getClass().getMethod("s").invoke(itemModificado);
 			if((boolean) itemModificado.getClass().getMethod("r").invoke(itemModificado)){
-				Set<String> tags = itemTag.d();
+				Set<String> tags = (Set<String>) itemTag.getClass().getMethod("d").invoke(itemTag);
 				List<String> listaNBT = new ArrayList<String>();
 				for(String t : tags) {
 					if(!t.equals("ench") && !t.equals("HideFlags") && !t.equals("display")

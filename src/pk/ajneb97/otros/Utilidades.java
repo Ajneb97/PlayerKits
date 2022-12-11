@@ -29,6 +29,7 @@ import pk.ajneb97.versiones.V1_17;
 import pk.ajneb97.versiones.V1_18_R1;
 import pk.ajneb97.versiones.V1_18_R2;
 import pk.ajneb97.versiones.V1_19_R1;
+import pk.ajneb97.versiones.V1_19_R2;
 import pk.ajneb97.versiones.V1_8_R1;
 import pk.ajneb97.versiones.V1_8_R2;
 import pk.ajneb97.versiones.V1_8_R3;
@@ -198,7 +199,11 @@ public class Utilidades {
 	
 	public static void guardarSkullDisplay(ItemStack item, FileConfiguration config, String path) {
 		String packageName = Bukkit.getServer().getClass().getPackage().getName();
-		if(packageName.contains("1_19_R1")){
+		if(packageName.contains("1_19_R2")){
+			V1_19_R2 u = new V1_19_R2();
+			u.guardarSkullDisplay(item,path,config);			
+		}
+		else if(packageName.contains("1_19_R1")){
 			V1_19_R1 u = new V1_19_R1();
 			u.guardarSkullDisplay(item,path,config);			
 		}else if(packageName.contains("1_18_R2")){
@@ -276,6 +281,10 @@ public class Utilidades {
 
 	public static void guardarSkull(ItemStack item, FileConfiguration config, String path, String nombreJugador) {
 		String packageName = Bukkit.getServer().getClass().getPackage().getName();
+		if(packageName.contains("1_19_R2")){
+			V1_19_R2 u = new V1_19_R2();
+			u.guardarSkull(item,path,config,nombreJugador);		
+		}else 
 		if(packageName.contains("1_19_R1")){
 			V1_19_R1 u = new V1_19_R1();
 			u.guardarSkull(item,path,config,nombreJugador);		
@@ -356,6 +365,10 @@ public class Utilidades {
 
 	public static void guardarAttributes(ItemStack item, FileConfiguration config, String path) {
 		String packageName = Bukkit.getServer().getClass().getPackage().getName();
+		if(packageName.contains("1_19_R2")){
+			V1_19_R2 u = new V1_19_R2();
+			u.guardarAttributes(item,path,config);			
+		}else
 		if(packageName.contains("1_19_R1")){
 			V1_19_R1 u = new V1_19_R1();
 			u.guardarAttributes(item,path,config);			
@@ -437,6 +450,10 @@ public class Utilidades {
 	
 	public static void guardarNBT(ItemStack item, FileConfiguration config, String path) {
 		String packageName = Bukkit.getServer().getClass().getPackage().getName();
+		if(packageName.contains("1_19_R2")){
+			V1_19_R2 u = new V1_19_R2();
+			u.guardarNBT(item,path,config);			
+		}else
 		if(packageName.contains("1_19_R1")){
 			V1_19_R1 u = new V1_19_R1();
 			u.guardarNBT(item,path,config);			
@@ -518,6 +535,11 @@ public class Utilidades {
 	
 	public static  ItemStack setUnbreakable(ItemStack item){
 		String packageName = Bukkit.getServer().getClass().getPackage().getName();
+		if(packageName.contains("1_19_R2")){
+			V1_19_R2 u = new V1_19_R2();
+			ItemStack stack = u.setUnbreakable(item);			
+			return stack;
+		}else
 		if(packageName.contains("1_19_R1")){
 			V1_19_R1 u = new V1_19_R1();
 			ItemStack stack = u.setUnbreakable(item);			
@@ -620,6 +642,11 @@ public class Utilidades {
 	
 	public static boolean getUnbreakable(ItemStack item){
 		String packageName = Bukkit.getServer().getClass().getPackage().getName();
+		if(packageName.contains("1_19_R2")){
+			V1_19_R2 u = new V1_19_R2();
+			boolean bol = u.getUnbreakable(item);
+			return bol;
+		}else
 		if(packageName.contains("1_19_R1")){
 			V1_19_R1 u = new V1_19_R1();
 			boolean bol = u.getUnbreakable(item);
@@ -721,6 +748,11 @@ public class Utilidades {
 	
 	public static ItemStack setSkull(ItemStack crafteos, String path, FileConfiguration config) {
 		String packageName = Bukkit.getServer().getClass().getPackage().getName();
+		if(packageName.contains("1_19_R2")){
+			V1_19_R2 u = new V1_19_R2();
+			ItemStack stack = u.setSkull(crafteos,path,config);			
+			return stack;
+		}else
 		if(packageName.contains("1_19_R1")){
 			V1_19_R1 u = new V1_19_R1();
 			ItemStack stack = u.setSkull(crafteos,path,config);			
@@ -821,6 +853,11 @@ public class Utilidades {
 	
 	public static ItemStack setNBT(ItemStack item, FileConfiguration config, String key) {
 		String packageName = Bukkit.getServer().getClass().getPackage().getName();
+		if(packageName.contains("1_19_R2")){
+			V1_19_R2 u = new V1_19_R2();
+			ItemStack stack = u.setNBT(item,key,config);		
+			return stack;
+		}else
 		if(packageName.contains("1_19_R1")){
 			V1_19_R1 u = new V1_19_R1();
 			ItemStack stack = u.setNBT(item,key,config);		
@@ -921,6 +958,11 @@ public class Utilidades {
 	
 	public static ItemStack setAttributes(ItemStack item, FileConfiguration config, String key) {
 		String packageName = Bukkit.getServer().getClass().getPackage().getName();
+		if(packageName.contains("1_19_R2")){
+			V1_19_R2 u = new V1_19_R2();
+			ItemStack stack = u.setAttributes(item,key,config);		
+			return stack;
+		}else
 		if(packageName.contains("1_19_R1")){
 			V1_19_R1 u = new V1_19_R1();
 			ItemStack stack = u.setAttributes(item,key,config);		
@@ -1021,6 +1063,10 @@ public class Utilidades {
 	
 	public static ItemStack setSkull(ItemStack item, String id, String textura) {
 		String packageName = Bukkit.getServer().getClass().getPackage().getName();
+		if(packageName.contains("1_19_R2")){
+			V1_19_R2 u = new V1_19_R2();
+			return u.setSkullSinID(item,textura);	
+		}else
 		if(packageName.contains("1_19_R1")){
 			V1_19_R1 u = new V1_19_R1();
 			return u.setSkullSinID(item,textura);	

@@ -28,10 +28,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import pk.ajneb97.api.PlayerKitsAPI;
 
 
-public class V1_19_R1 {
+public class V1_19_R2 {
 	
 	private String sepChar;
-	public V1_19_R1() {
+	public V1_19_R2() {
 		sepChar = PlayerKitsAPI.getNBTSeparationCharacter();
 	}
 	
@@ -98,7 +98,7 @@ public class V1_19_R1 {
 	}
 
 	public void guardarSkull(ItemStack item, String path, FileConfiguration config, String nombreJugador) {
-		net.minecraft.world.item.ItemStack cabeza = org.bukkit.craftbukkit.v1_19_R1.inventory.CraftItemStack.asNMSCopy(item);
+		net.minecraft.world.item.ItemStack cabeza = org.bukkit.craftbukkit.v1_19_R2.inventory.CraftItemStack.asNMSCopy(item);
 		net.minecraft.nbt.NBTTagCompound cabezaTag =  cabeza.u();
 		if(cabeza.t()){
 			if(cabezaTag.e("SkullOwner")){
@@ -117,7 +117,7 @@ public class V1_19_R1 {
 	}
 	
 	public void guardarSkullDisplay(ItemStack item, String path, FileConfiguration config) {
-		net.minecraft.world.item.ItemStack cabeza = org.bukkit.craftbukkit.v1_19_R1.inventory.CraftItemStack.asNMSCopy(item);
+		net.minecraft.world.item.ItemStack cabeza = org.bukkit.craftbukkit.v1_19_R2.inventory.CraftItemStack.asNMSCopy(item);
 		net.minecraft.nbt.NBTTagCompound cabezaTag =  cabeza.u();
 		if(cabeza.t()){
 			if(cabezaTag.e("SkullOwner")){
@@ -194,17 +194,10 @@ public class V1_19_R1 {
 	}
 	
 	public void guardarNBT(ItemStack item, String path, FileConfiguration config) {
-		net.minecraft.world.item.ItemStack itemModificado = org.bukkit.craftbukkit.v1_19_R1.inventory.CraftItemStack.asNMSCopy(item);
+		net.minecraft.world.item.ItemStack itemModificado = org.bukkit.craftbukkit.v1_19_R2.inventory.CraftItemStack.asNMSCopy(item);
 		net.minecraft.nbt.NBTTagCompound itemTag =  itemModificado.u();
 		if(itemModificado.t()){
-			Set<String> tags = null;
-			try {
-				tags = (Set<String>) itemTag.getClass().getMethod("d").invoke(itemTag);
-			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
-					| NoSuchMethodException | SecurityException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			Set<String> tags = itemTag.e();
 			List<String> listaNBT = new ArrayList<String>();
 			for(String t : tags) {
 				if(!t.equals("ench") && !t.equals("HideFlags") && !t.equals("display")
@@ -242,7 +235,7 @@ public class V1_19_R1 {
 	}
 	
 	public ItemStack setNBT(ItemStack item, String path, FileConfiguration config) {
-		net.minecraft.world.item.ItemStack nuevoItem = org.bukkit.craftbukkit.v1_19_R1.inventory.CraftItemStack.asNMSCopy(item);
+		net.minecraft.world.item.ItemStack nuevoItem = org.bukkit.craftbukkit.v1_19_R2.inventory.CraftItemStack.asNMSCopy(item);
 		net.minecraft.nbt.NBTTagCompound tag = nuevoItem.t() ? nuevoItem.u() : new net.minecraft.nbt.NBTTagCompound(); 
 		List<String> listaNBT = config.getStringList(path+".nbt");
 		for(int i=0;i<listaNBT.size();i++) {
@@ -271,6 +264,6 @@ public class V1_19_R1 {
 			
 		}
 		nuevoItem.c(tag);
-		return org.bukkit.craftbukkit.v1_19_R1.inventory.CraftItemStack.asBukkitCopy(nuevoItem);
+		return org.bukkit.craftbukkit.v1_19_R2.inventory.CraftItemStack.asBukkitCopy(nuevoItem);
 	}
 }

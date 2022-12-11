@@ -211,7 +211,14 @@ public class V1_18_R2 {
 		try {
 			net.minecraft.nbt.NBTTagCompound itemTag = (NBTTagCompound) itemModificado.getClass().getMethod("t").invoke(itemModificado);
 			if(itemModificado.s()){
-				Set<String> tags = itemTag.d();
+				Set<String> tags = null;
+				try {
+					tags = (Set<String>) itemTag.getClass().getMethod("d").invoke(itemTag);
+				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
+						| NoSuchMethodException | SecurityException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				List<String> listaNBT = new ArrayList<String>();
 				for(String t : tags) {
 					if(!t.equals("ench") && !t.equals("HideFlags") && !t.equals("display")
