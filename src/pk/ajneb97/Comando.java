@@ -218,7 +218,7 @@ public class Comando implements CommandExecutor,TabCompleter {
 				   jugador.sendMessage(MensajesUtils.getMensajeColor(prefix+config.getString("Messages.noPermissions"))); 
 			   }
 		   }else if(args[0].equalsIgnoreCase("edit")) {
-			   if(jugador.isOp() || jugador.hasPermission("playerkits.admin")) {
+			   if(jugador.isOp() || jugador.hasPermission("playerkits.edit")) {
 				   if(args.length >= 2) {
 					   String kit = getKit(configKits,args[1]);
 					   if(kit != null) {
